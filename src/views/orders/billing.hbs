@@ -1,0 +1,140 @@
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <title>Billing</title>
+    <style>
+      .table td, th {
+        border: 1px black solid;
+      }
+      .right {   
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <center><b>PVM SĄSKAITA FAKTŪRA</b></center>
+    <center><b>Serija 22 Nr. {{ billing.bill_id }}</b></center>
+    <center><b>{{#if billing.bill_date}}{{#orderDeliveryDate billing.bill_date}}{{/orderDeliveryDate}}{{else}}{{#orderDeliveryDate order.delivery_date}}{{/orderDeliveryDate}}{{/if}}</b></center>
+    <br>
+    <center>
+      <div style="width: 700px;">
+      <table>
+      <tr>
+        <td><b><u>Pardavėjas:</u></b></td>
+        <td></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td><b><u>Pirkėjas:</u></b></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>UAB "Placeholder"</b></td>
+        <td></td>
+        <td></td>
+        <td colspan="2"><b>{{ order.client.name }}</b></td>
+      </tr>
+      <tr>
+        <td colspan="2">Placeholder for address</td>
+        <td></td>
+        <td colspan="2">{{ order.client.address }}, {{ order.client.postal_code }} {{ order.client.city }}, {{ order.client.country }}</td>
+      </tr>
+      <tr>
+        <td><b>Tel. Nr.: </b></td>
+        <td>+37062662220</td>
+        <td></td>
+        <td><b>Tel. Nr.: </b></td>
+        <td>{{ order.client.phone }}</td>
+      </tr>
+      <tr>
+        <td><b>El. paštas:</b></td>
+        <td>sseirys@gmail.com</td>
+        <td></td>
+        <td><b>El. paštas:</b></td>
+        <td>{{ order.client.email }}</td>
+      </tr>
+      <tr>
+        <td><b>Įmonės kodas: </b></td>
+        <td>0000000</td>
+        <td></td>
+        <td><b>Įmonės kodas: </b></td>
+        <td>{{ order.client.company_code }}</td>
+      </tr>
+      <tr>
+        <td><b>PVM mokėtojo kodas:</b> </td>
+        <td>LT1000000000</td>
+        <td></td>
+        <td><b>PVM mokėtojo kodas:</b></td>
+        <td>{{ order.client.vat_code }}</td>
+      </tr>
+      <tr>
+        <td><b>Banko pavadinimas: </b></td>
+        <td>UAB Bankas</td>
+        <td></td>
+        <td><b>Banko pavadinimas: </b></td>
+        <td>{{ order.client.banks_name }}</td>
+      </tr>
+      <tr>
+        <td><b>Sąskaitos Nr.:</b></td>
+        <td>LT0000000000000000000</td>
+        <td></td>
+        <td><b>Sąskaitos Nr.:</b></td>
+        <td>{{ order.client.account_number }}</td>
+      </tr>
+    </table>
+    <br>
+    <table class="table">
+      <tr>
+        <th>Eil. nr.</th>
+        <th style="width: 280px;">Prekės pavadinimas</th>
+        <th style="width: 70px;">Matas</th>
+        <th style="width: 70px;">Kiekis</th>
+        <th style="width: 90px;">Kaina</th>
+        <th style="width: 120px;">Suma</th>
+      </tr>
+      {{#if billing.bill_items.length }}
+      {{#each billing.bill_items as |orderItem index|}}
+        <tr>
+          <td><center>{{#indexPlus index }}{{/indexPlus}}</center></td>
+          <td><center>Polisterinis putplastis {{orderItem.blueprint.product_class.name}} <br> {{orderItem.blueprint.product_size.x_mm}}x{{orderItem.blueprint.product_size.y_mm}}x{{orderItem.blueprint.product_size.z_mm}}</center></td>
+          <td><center>m3</center></td>
+          <td><center>{{#countVolume orderItem}}{{/countVolume}}</center></td>
+          <td><center>{{#billItemClassPrice}}{{/billItemClassPrice}}</center></td>
+          <td><center>{{#billItemPrice}}{{/billItemPrice}}</center></td>
+        </tr>
+      {{/each}}
+      {{/if}}
+      <tr style="height: 30px;">
+        <td colspan="5" class="right"><b>Viso:</b></td>
+        <td><center><b>{{#billItemsTotalPrice}}{{/billItemsTotalPrice}}</b></center></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td colspan="5" class="right"><b>PVM (21%):</b></td>
+        <td><center><b>{{#billItemsTotalPriceVAT}}{{/billItemsTotalPriceVAT}}</b></center></td>
+      </tr>
+      <tr style="height: 30px;">
+        <td colspan="5" class="right"><b>Viso su PVM:</b></td>
+        <td><center><b>{{#billItemsTotalPriceWithVAT}}{{/billItemsTotalPriceWithVAT}}</b></center></td>
+      </tr>
+    </table>
+      <div style="text-align: left;">
+        <br>
+      Suma žodžiais: {{#floatAmountToWordsLt}}{{/floatAmountToWordsLt}}
+      <br><br>
+      Apmokėti iki <b>{{#payDate}}{{/payDate}}</b>
+      <br><br>
+      {{#if billing.note}}
+      Pastaba: {{ billing.note }}
+      <br>
+      {{/if}}
+      </div>
+      <div class="right">Sąskaitą išrašė: Vardenis Pavardenis</div>
+      
+    </div>
+    </center>
+    
+    
+    
+  </body>
+
+</html>

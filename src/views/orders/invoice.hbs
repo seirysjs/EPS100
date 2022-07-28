@@ -1,0 +1,120 @@
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      .table td, th {border: 1px black solid;}
+    </style>
+    <title>Invoice</title>
+  </head>
+
+  <body>
+    <center><b>KROVINIO VAŽTARAŠTIS</b></center>
+    <center><b>{{#if transfer.vaz_number }}{{ transfer.vaz_number }}{{else}}&nbsp;{{/if}}</b></center>
+    <center><b>Nr. 22-{{ transfer.transfer_id }}</b></center>
+  <br>
+    <center><b>{{#if transfer.invoice_date}}{{#orderDeliveryDate transfer.invoice_date}}{{/orderDeliveryDate}}{{else}}{{#orderDeliveryDate order.delivery_date}}{{/orderDeliveryDate}}{{/if}}</b></center>
+    <center>(data)</center>
+  <br>
+  <center><b>Vardeniai</b></center>
+  <center>(vieta)</center>
+  <br>
+  <center>
+    <table class="table">
+      <tr>
+        <td><center style="margin-top: 2px; margin-bottom: 2px;"><b>&nbsp;Siuntėjo pavadinimas, adresas:&nbsp;</b></center></td>
+        <td colspan="3"><center>&nbsp;Placeholder&nbsp;</center></td>
+      </tr>
+      <tr>
+        <td><center style="margin-top: 2px; margin-bottom: 2px;"><b>Gavėjo pavadinimas, adresas:</b></center></td>
+        <td colspan="3"><center>{{ order.client.address }}, {{ order.client.postal_code }} {{ order.client.city }}, {{ order.client.country }}</center></td>
+      </tr>
+      <tr>
+        <td><center style="margin-top: 2px; margin-bottom: 2px;"><b>Pakrovimo vieta:{{#if transfer.loading_date}}<br>Data:{{/if}}</b></center></td>
+        <td colspan="3"><center>{{#if transfer.loading_address}} {{ transfer.loading_address }}, {{ transfer.loading_postal_code }} {{ transfer.loading_city }}, {{#if transfer.loading_country}} {{ transfer.loading_country }} {{else}}  {{#if order.lcountry}}{{ order.lcountry }}{{else}} Lietuva{{/if}} {{/if}}  {{else}}  {{#if order.laddress}}{{ order.laddress }}{{else}}Vardenių g. 11{{/if}}, {{#if order.lcity}}{{ order.lcity }}{{else}}Vardeniai{{/if}}, {{#if order.lpostal_code}}{{ order.lpostal_code }}{{else}}Vardenių r.{{/if}}, {{#if order.lcountry}}{{ order.lcountry }}{{else}}Lietuva{{/if}} {{/if}}<br>{{#if transfer.loading_date}}{{#orderVazDate transfer.loading_date }}{{/orderVazDate}}{{/if}}</center></td>
+      </tr>
+      <tr>
+        <td><center style="margin-top: 2px; margin-bottom: 2px;"><b>Iškrovimo vieta:{{#if transfer.unloading_date}}<br>Data:{{/if}}</b></center></td>
+        <td colspan="3"><center>{{#if transfer.unloading_address}} {{ transfer.unloading_address }}, {{ transfer.unloading_postal_code }} {{ transfer.unloading_city }}, {{#if transfer.unloading_country}}{{ transfer.unloading_country }}{{else}}{{#if order.country}}{{ order.country }}{{else}}{{ order.client.country }}{{/if}}{{/if}}{{else}}{{#if order.address}}{{ order.address }}{{else}}{{ order.client.address }}{{/if}}, {{#if order.postal_code}}{{ order.postal_code }}{{else}}{{ order.client.postal_code }}{{/if}} {{#if order.city}}{{ order.city }}{{else}}{{ order.client.city }}{{/if}}, {{#if order.country}}{{ order.country }}{{else}}{{ order.client.country }}{{/if}}{{/if}}{{#if transfer.unloading_phone_number}}, Tel.Nr.: {{ transfer.unloading_phone_number }}{{/if}}<br>{{#if transfer.unloading_date}}{{#orderVazDate transfer.unloading_date }}{{/orderVazDate}}{{/if}}</center></td>
+      </tr>
+      <tr>
+        <td><center><b>Transporto priemonės markė <br> ir valstybinis Nr.</b></center></td>
+        <td colspan="3"><center>{{ transfer.transport.name }} {{ transfer.transport.number }}</center></td>
+      </tr>
+      <tr style="height: 30px;"></tr>
+      <tr>
+        <th><center style="margin-top: 2px; margin-bottom: 2px;">Produkto pavadinimas</center></th>
+        <th>&nbsp;&nbsp;&nbsp;Produkto matmenys&nbsp;&nbsp;&nbsp;</th>
+        <th>Pakuočių skaičius (vnt)</th>
+        <th>&nbsp;&nbsp;&nbsp;Kiekis (m3)&nbsp;&nbsp;&nbsp;</th>
+      </tr>
+      {{#if transfer.transfer_items.length }}
+      {{#each transfer.transfer_items as |transferItem|}}
+        <tr>
+          <td><center>&nbsp;Polisterinis putplastis {{transferItem.blueprint.product_class.name}}&nbsp;</center></td>
+          <td><center>{{transferItem.blueprint.product_size.x_mm}}*{{transferItem.blueprint.product_size.y_mm}}*{{transferItem.blueprint.product_size.z_mm}}</center></td>
+          <td><center>&nbsp;{{transferItem.packs}}&nbsp;</center></td>
+          <td><center>{{#countVolume transferItem}}{{/countVolume}}</center></td>
+        </tr>
+      {{/each}}
+      {{/if}}
+      <tr>
+          <td colspan="2" style="border: 0px;"></td>
+          <td><div style="text-align: right; margin-right: 5px; margin-top: 2px; margin-bottom: 2px;"><b>&nbsp;Viso&nbsp;(m3):&nbsp;</b></div></td>
+          <td><center><b>{{#if transfer.transfer_items.length }}{{#countVolumeTotal transfer.transfer_items}}{{/countVolumeTotal}}{{/if}}</b></center></td>
+        </tr>
+    </table>
+<table>
+  <br><br><br>
+<tr>
+  <td style="width: 110px; "><div style="margin-left: -10px;"><b>Vairuotojas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></div></td>
+  <td style="width: 80px;"></td>
+  <td style="width: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td>_________________</td>
+  <td style="width: 40px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td>{{#if transfer.worker }}<div style="border-bottom: 1px black solid;"><center>&nbsp;&nbsp;{{ transfer.worker.name }}&nbsp;&nbsp;</center></div>{{else}}<div style="border-bottom: 1px black solid;">&nbsp;&nbsp;&nbsp;&nbsp;</div>{{/if}}</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td><center>(parašas)</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td><center>(vardas, pavardė)</center></td>
+</tr>
+<tr>
+  <td><div style="margin-top: 20px;"><b>Siuntėjas</b></div></td>
+  <td><center style="margin-top: 20px; margin-right: 30px; margin-left: 30px;">direktorius</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td><center style="margin-top: 20px; margin-right: 30px; margin-left: 30px;">&nbsp;&nbsp;Vardenis Pavardenis&nbsp;&nbsp;</center></td>
+</tr>
+<tr>
+  <td></td>
+  <td style="border-top: 1px black solid;"><center>(pareigos)</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td style="border-top: 1px black solid;"><center>(parašas)</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td style="border-top: 1px black solid;"><center>(vardas, pavardė)</center></td>
+</tr>
+<tr>
+  <td><div style="margin-top: 20px;"><b>Gavėjas</b></div></td>
+  <td><center style="margin-top: 20px;">&nbsp;</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td></td>
+</tr>
+<tr>
+  <td></td>
+  <td style="border-top: 1px black solid;"><center>(pareigos)</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td style="border-top: 1px black solid;"><center>(parašas)</center></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td style="border-top: 1px black solid;"><center>(vardas, pavardė)</center></td>
+</tr>
+</table>
+</center>
+  </body>
+</html>
