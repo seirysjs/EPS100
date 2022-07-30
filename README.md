@@ -24,7 +24,7 @@ npm run start:dev
 <thead>
 <tr>
 <th>
-<h1> Repositories (Entities) </h1>
+<h1> Repositories <br> (Entities) </h1>
 <br>
 
 </th>
@@ -46,7 +46,7 @@ npm run start:dev
 <td> 
 
 ``` Javascript
-                           
+                            
 config.entities = [
   User,
   Worker,
@@ -77,7 +77,7 @@ config.entities = [
 <td> 
 
 ``` Javascript
-                                     
+                            
 providers: [
     AppService,
     UsersService,
@@ -111,7 +111,7 @@ providers: [
 
 
 
-                                     
+                                
 controllers: [
     AppController,
     WorkersController,
