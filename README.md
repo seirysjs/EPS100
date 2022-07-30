@@ -1,8 +1,15 @@
 # EPS100 Back-End
 Application is based on ` Node.js ` + ` Nest.js `
-<br>
+ <br>
 
 The Project as well features `TypeORM` + `MySQL`
+
+<h3> This BE Program was designed to work with it's own FE. It can be found on: </h3>
+https://github.com/seirysjs/EPS100-Front-End
+ <br> <br>
+
+![image](https://user-images.githubusercontent.com/28308881/181890128-01134475-3a33-416e-88e3-b202ddc72f08.png)
+ <br>
 
 ### Project Setup
 
@@ -19,6 +26,9 @@ npm run start:dev
 * Screenshots
 ------------------
 
+![InvoiceBilling](https://user-images.githubusercontent.com/28308881/181902884-3dc00e63-a9b8-44ae-bc52-df0f4f8c6e6c.png)
+
+------------------
 <table>
 
 <thead>
