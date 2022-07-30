@@ -5,14 +5,10 @@ import { Block } from 'src/blocks/block.entity';
 import { Transfer } from 'src/transfers/transfer.entity';
 import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
-  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
@@ -25,7 +21,7 @@ export class Worker {
   @Column('varchar')
   name: string;
 
-  @Column('bool', { default: true})
+  @Column('bool', { default: true })
   enabled: boolean;
 
   @OneToMany(() => Block, (block: Block) => block.worker)
@@ -42,7 +38,10 @@ export class Worker {
   })
   block_cuts: BlockCut[];
 
-  @OneToMany(() => BlockMultiCut, (blockMultiCut: BlockMultiCut) => blockMultiCut.worker)
+  @OneToMany(
+    () => BlockMultiCut,
+    (blockMultiCut: BlockMultiCut) => blockMultiCut.worker,
+  )
   @JoinColumn({
     name: 'worker_id',
     referencedColumnName: 'worker_id',

@@ -31,12 +31,13 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-        order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      order: { price_id: 'DESC' },
     });
   }
 
@@ -46,12 +47,13 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-        order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      order: { price_id: 'DESC' },
     });
   }
 
@@ -83,13 +85,14 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-      where: { price_list_id: priceListId }, 
-      order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      where: { price_list_id: priceListId },
+      order: { price_id: 'DESC' },
     });
   }
 
@@ -99,13 +102,14 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-      where: { price_list: { bill: { bill_id: billId } } }, 
-      order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      where: { price_list: { bill: { bill_id: billId } } },
+      order: { price_id: 'DESC' },
     });
   }
 
@@ -115,13 +119,14 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-      where: { price_list: { order: { order_id: orderId } } }, 
-      order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      where: { price_list: { order: { order_id: orderId } } },
+      order: { price_id: 'DESC' },
     });
   }
 
@@ -131,13 +136,14 @@ export class PricesService {
         'product_class',
         'product_class.blueprints',
         'product_class.blueprints.product_size',
-        'price_list', 
-        'price_list.bills', 
+        'price_list',
+        'price_list.bills',
         'price_list.bills.bill_items',
-        'price_list.orders', 
-        'price_list.orders.order_item_fulfills'], 
-      where: { product_class_id: productClassId }, 
-      order: { price_id: "DESC" }
+        'price_list.orders',
+        'price_list.orders.order_item_fulfills',
+      ],
+      where: { product_class_id: productClassId },
+      order: { price_id: 'DESC' },
     });
   }
 }

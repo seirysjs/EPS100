@@ -11,7 +11,15 @@ import { BlockCut } from 'src/blocks/block-cut.entity';
 import { BlockMultiCut } from 'src/blocks/block-multi-cut.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Worker, Block, BlockCut, WarehouseItem, BlockMultiCut])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Worker,
+      Block,
+      BlockCut,
+      WarehouseItem,
+      BlockMultiCut,
+    ]),
+  ],
   controllers: [WorkersController],
   providers: [WorkersService, BlocksService, WarehouseItemsService],
   exports: [TypeOrmModule],

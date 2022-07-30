@@ -26,13 +26,28 @@ export class BillItemsService {
 
   async findAll(): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.order', 'bill.order.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.order',
+        'bill.order.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findOne(id: number): Promise<BillItem> {
     return await this.billItemsRepository.findOne(id, {
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'],
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
     });
   }
 
@@ -54,43 +69,103 @@ export class BillItemsService {
     return;
   }
 
-  async updateBillItem(billItemId: number, billItem: BillItem): Promise<object> {
+  async updateBillItem(
+    billItemId: number,
+    billItem: BillItem,
+  ): Promise<object> {
     return await this.billItemsRepository.update(billItemId, billItem);
   }
 
   async findAllForBill(billId: number): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { bill_id: billId }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { bill_id: billId },
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findAllinWIPBill(): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { "bill": { status: "wip" } }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { bill: { status: 'wip' } },
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findAllByBlueprint(blueprintId: number): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId },
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findAllWIPBillByBlueprint(blueprintId: number): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId, "bill": { status: "wip" } }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId, bill: { status: 'wip' } },
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findAllByClass(productClassId: number): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { 'blueprint': { product_class_id: productClassId } }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint: { product_class_id: productClassId } },
+      order: { bill_item_id: 'DESC' },
     });
   }
 
   async findAllWIPBillByClass(productClassId: number): Promise<BillItem[]> {
     return await this.billItemsRepository.find({
-      relations: ['bill', 'bill.bill_items', 'bill.client', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { 'blueprint': { product_class_id: productClassId }, 'bill': { status: 'wip' } }, order: { bill_item_id: "DESC" }
+      relations: [
+        'bill',
+        'bill.bill_items',
+        'bill.client',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: {
+        blueprint: { product_class_id: productClassId },
+        bill: { status: 'wip' },
+      },
+      order: { bill_item_id: 'DESC' },
     });
   }
 }

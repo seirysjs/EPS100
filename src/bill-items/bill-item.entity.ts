@@ -2,13 +2,9 @@ import { Blueprint } from 'src/blueprints/blueprint.entity';
 import { Bill } from 'src/bills/bill.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';

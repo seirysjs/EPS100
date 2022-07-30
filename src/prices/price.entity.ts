@@ -3,13 +3,9 @@ import { PriceList } from 'src/price-lists/price-list.entity';
 import { ProductClass } from 'src/product-classes/product-class.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -28,14 +24,17 @@ export class Price {
   product_class_id: number;
 
   @IsNumber()
-  @Column("decimal", { precision: 6, scale: 2, default: 0 })
+  @Column('decimal', { precision: 6, scale: 2, default: 0 })
   amount: number;
 
   @IsNumber()
-  @Column("decimal", { precision: 6, scale: 2, default: 20 })
+  @Column('decimal', { precision: 6, scale: 2, default: 20 })
   markup: number;
 
-  @ManyToOne(() => ProductClass, (productClass: ProductClass) => productClass.prices)
+  @ManyToOne(
+    () => ProductClass,
+    (productClass: ProductClass) => productClass.prices,
+  )
   @JoinColumn({
     name: 'product_class_id',
     referencedColumnName: 'product_class_id',

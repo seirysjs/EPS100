@@ -2,13 +2,9 @@ import { Blueprint } from 'src/blueprints/blueprint.entity';
 import { Transfer } from 'src/transfers/transfer.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -27,10 +23,13 @@ export class TransferItem {
   @Column('int')
   count: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   packs: string;
 
-  @ManyToOne(() => Blueprint, (blueprint: Blueprint) => blueprint.transfer_items)
+  @ManyToOne(
+    () => Blueprint,
+    (blueprint: Blueprint) => blueprint.transfer_items,
+  )
   @JoinColumn({
     name: 'blueprint_id',
     referencedColumnName: 'blueprint_id',

@@ -22,9 +22,32 @@ import { BlocksController } from './blocks.controller';
 import { BlocksService } from './blocks.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Block, BlockCut, BlockMultiCut, ProductClass, Worker, Blueprint, WarehouseItem, OrderItem, OrderItemFulfill, TransferItem, BillItem])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Block,
+      BlockCut,
+      BlockMultiCut,
+      ProductClass,
+      Worker,
+      Blueprint,
+      WarehouseItem,
+      OrderItem,
+      OrderItemFulfill,
+      TransferItem,
+      BillItem,
+    ]),
+  ],
   controllers: [BlocksController],
-  providers: [BlocksService, ProductClassService, WorkersService, BlueprintsService, WarehouseItemsService, OrderItemsService, TransferItemsService, BillItemsService],
+  providers: [
+    BlocksService,
+    ProductClassService,
+    WorkersService,
+    BlueprintsService,
+    WarehouseItemsService,
+    OrderItemsService,
+    TransferItemsService,
+    BillItemsService,
+  ],
   exports: [TypeOrmModule],
 })
 export class BlocksModule {}

@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TransferItem } from './transfer-item.entity';
 import { TransferItemsService } from './transfer-items.service';
@@ -30,7 +38,7 @@ export class TransferItemsController {
   async findAllByBlueprint(@Param('id') id: number): Promise<TransferItem[]> {
     return await this.transferItemsService.findAllByBlueprint(id);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get('by-transfer/:id')
   async findAllByTransfer(@Param('id') id: number): Promise<TransferItem[]> {
@@ -39,7 +47,9 @@ export class TransferItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('by-class/:id/wip')
-  async findAllWIPTransferByClass(@Param('id') id: number): Promise<TransferItem[]> {
+  async findAllWIPTransferByClass(
+    @Param('id') id: number,
+  ): Promise<TransferItem[]> {
     return await this.transferItemsService.findAllWIPTransferByClass(id);
   }
 
@@ -51,17 +61,21 @@ export class TransferItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('wip-by-blueprint/:id')
-  async findAllWIPTransferByBlueprint(@Param('id') id: number): Promise<TransferItem[]> {
+  async findAllWIPTransferByBlueprint(
+    @Param('id') id: number,
+  ): Promise<TransferItem[]> {
     return await this.transferItemsService.findAllWIPTransferByBlueprint(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async update(@Body() transferItem: TransferItem, @Param('id') id: number): Promise<TransferItem> {
+  async update(
+    @Body() transferItem: TransferItem,
+    @Param('id') id: number,
+  ): Promise<TransferItem> {
     await this.transferItemsService.updateTransferItem(id, transferItem);
     return await this.transferItemsService.findOne(id);
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

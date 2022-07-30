@@ -1,16 +1,12 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 import { Bill } from './bill.entity';
 
 @Entity({ name: 'bill_payments' })
@@ -23,14 +19,14 @@ export class BillPayment {
   bill_id: number;
 
   @IsNumber()
-  @Column("decimal", { precision: 8, scale: 2, default: 0 })
+  @Column('decimal', { precision: 8, scale: 2, default: 0 })
   amount: number;
 
   @IsDate()
   @Column('datetime', { default: null })
   payment_date: Date;
 
-  @Column("varchar")
+  @Column('varchar')
   note: string;
 
   @ManyToOne(() => Bill, (bill: Bill) => bill.bill_payments)

@@ -32,13 +32,36 @@ export class ClientsService {
 
   async findAll(): Promise<Client[]> {
     return this.clientsRepository.find({
-      relations: ['orders', 'orders.order_items', 'orders.order_items.blueprint', 'orders.order_items.blueprint.product_size', 'orders.order_items.blueprint.product_class', 'orders.order_item_fulfills', 'orders.order_item_fulfills.blueprint', 'orders.order_item_fulfills.blueprint.product_size', 'orders.order_item_fulfills.blueprint.product_class', 'orders.transport'], order: { client_id: "DESC" }
+      relations: [
+        'orders',
+        'orders.order_items',
+        'orders.order_items.blueprint',
+        'orders.order_items.blueprint.product_size',
+        'orders.order_items.blueprint.product_class',
+        'orders.order_item_fulfills',
+        'orders.order_item_fulfills.blueprint',
+        'orders.order_item_fulfills.blueprint.product_size',
+        'orders.order_item_fulfills.blueprint.product_class',
+        'orders.transport',
+      ],
+      order: { client_id: 'DESC' },
     });
   }
 
   async findOne(id: number): Promise<Client> {
     return await this.clientsRepository.findOne(id, {
-      relations: ['orders', 'orders.order_items', 'orders.order_items.blueprint', 'orders.order_items.blueprint.product_size', 'orders.order_items.blueprint.product_class', 'orders.order_item_fulfills', 'orders.order_item_fulfills.blueprint', 'orders.order_item_fulfills.blueprint.product_size', 'orders.order_item_fulfills.blueprint.product_class', 'orders.transport'],
+      relations: [
+        'orders',
+        'orders.order_items',
+        'orders.order_items.blueprint',
+        'orders.order_items.blueprint.product_size',
+        'orders.order_items.blueprint.product_class',
+        'orders.order_item_fulfills',
+        'orders.order_item_fulfills.blueprint',
+        'orders.order_item_fulfills.blueprint.product_size',
+        'orders.order_item_fulfills.blueprint.product_class',
+        'orders.transport',
+      ],
     });
   }
 

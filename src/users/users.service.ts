@@ -24,7 +24,7 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return await this.usersRepository.find({
-      order: { user_id: "DESC" }
+      order: { user_id: 'DESC' },
     });
   }
 
@@ -33,7 +33,9 @@ export class UsersService {
   }
 
   async findByUsername(username: string): Promise<User | undefined> {
-    return await this.usersRepository.findOne({where: { username: username }});
+    return await this.usersRepository.findOne({
+      where: { username: username },
+    });
   }
 
   async remove(id: number): Promise<void> {

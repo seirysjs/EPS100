@@ -37,8 +37,8 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
-      order: { price_list_id: "DESC" }
+      ],
+      order: { price_list_id: 'DESC' },
     });
   }
 
@@ -53,7 +53,7 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
+      ],
     });
   }
 
@@ -68,8 +68,8 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
-      order: { price_list_id: "DESC" },
+      ],
+      order: { price_list_id: 'DESC' },
       where: { bill: { bill_id: billId } },
     });
   }
@@ -85,8 +85,8 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
-      order: { price_list_id: "DESC" },
+      ],
+      order: { price_list_id: 'DESC' },
       where: { order: { order_id: orderId } },
     });
   }
@@ -102,8 +102,8 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
-      order: { price_list_id: "DESC" },
+      ],
+      order: { price_list_id: 'DESC' },
       where: { price: { price_id: priceId } },
     });
   }
@@ -119,8 +119,8 @@ export class PriceListsService {
         'bills',
         'bills.bill_items',
         'bills.bill_payments',
-      ], 
-      order: { price_list_id: "DESC" },
+      ],
+      order: { price_list_id: 'DESC' },
       where: { enabled: true },
     });
   }
@@ -147,9 +147,9 @@ export class PriceListsService {
   }
 
   async getLastPriceListId(): Promise<number> {
-    const priceList = (
-      await this.priceListsRepository.findOne({ order: { price_list_id: 'DESC' } })
-    );
+    const priceList = await this.priceListsRepository.findOne({
+      order: { price_list_id: 'DESC' },
+    });
     if (priceList) return priceList.price_list_id;
     return 0;
   }

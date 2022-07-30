@@ -8,32 +8,24 @@ import {
   Render,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { BlueprintsService } from 'src/blueprints/blueprints.service';
-import { OrdersService } from 'src/orders/orders.service';
 import { TransferItem } from 'src/transfer-items/transfer-item.entity';
 import { TransferItemsService } from 'src/transfer-items/transfer-items.service';
-import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
-import { WarehouseItemsService } from 'src/warehouse-items/warehouse-items.service';
 import { Transfer, TransferStatusType } from './transfer.entity';
 import { TransfersService } from './transfers.service';
 
 @Controller('transfers')
 export class TransfersController {
   constructor(
-    private readonly transfersService: TransfersService, 
-    private readonly blueprintsService: BlueprintsService, 
-    private readonly ordersService: OrdersService, 
+    private readonly transfersService: TransfersService,
     private readonly transferItemsService: TransferItemsService,
-    private readonly warehouseItemsService: WarehouseItemsService, 
-    ) {}
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('new')
   async newTransferFormPost(@Body() formData: any): Promise<object> {
     const content = {
-      errors: []
+      errors: [],
     };
     const order_id = formData.order_id;
     const status: TransferStatusType = 'open';
@@ -56,82 +48,94 @@ export class TransfersController {
     const transfer_items = formData.productRows;
 
     if (!order_id || order_id == 0) {
-      content.errors = [{ property: "order_id", constraints:["order_id must be selected!"]}]; 
+      content.errors = [
+        { property: 'order_id', constraints: ['order_id must be selected!'] },
+      ];
       return content;
     }
 
     if (transfer_items.length == 0) return content;
 
     let transfer_quantity = 0;
-    for (let transferItemIndex = 0; transferItemIndex < transfer_items.length; transferItemIndex++) {
+    for (
+      let transferItemIndex = 0;
+      transferItemIndex < transfer_items.length;
+      transferItemIndex++
+    ) {
       const transfer_item = transfer_items[transferItemIndex];
       transfer_quantity += transfer_item.quantityM3;
     }
     if (transfer_quantity == 0) return content;
 
-    const transferId = (await this.transfersService.create((
-      (
-        order_id,
-        status,
-        transfer_id,
-        vaz_number,
-        invoice_date,
-        transport_id,
-        worker_id,
-        unloading_address,
-        unloading_city,
-        unloading_country,
-        unloading_postal_code,
-        unloading_date,
-        unloading_phone_number,
-        loading_address,
-        loading_city,
-        loading_country,
-        loading_postal_code,
-        loading_date,
-      ) => {
-      const transfer = new Transfer();
-      transfer.order_id = order_id;
-      transfer.status = status;
-      transfer.transfer_id = transfer_id;
-      transfer.vaz_number = vaz_number;
-      transfer.invoice_date = invoice_date;
-      transfer.transport_id = transport_id;
-      transfer.worker_id = worker_id;
-      transfer.unloading_address = unloading_address;
-      transfer.unloading_city = unloading_city;
-      transfer.unloading_country = unloading_country;
-      transfer.unloading_postal_code = unloading_postal_code;
-      transfer.unloading_date = unloading_date;
-      transfer.unloading_phone_number = unloading_phone_number;
-      transfer.loading_address = loading_address;
-      transfer.loading_city = loading_city;
-      transfer.loading_country = loading_country;
-      transfer.loading_postal_code = loading_postal_code;
-      transfer.loading_date = loading_date;
-      return transfer;
-    })
-    (
-      order_id,
-      status,
-      transfer_id,
-      vaz_number,
-      invoice_date,
-      transport_id,
-      worker_id,
-      unloading_address,
-      unloading_city,
-      unloading_country,
-      unloading_postal_code,
-      unloading_date,
-      unloading_phone_number,
-      loading_address,
-      loading_city,
-      loading_country,
-      loading_postal_code,
-      loading_date,
-    ))).transfer_id;
-    for (let productRow = 0; productRow < formData.productRows.length; productRow++) {
+    const transferId = (
+      await this.transfersService.create(
+        ((
+          order_id,
+          status,
+          transfer_id,
+          vaz_number,
+          invoice_date,
+          transport_id,
+          worker_id,
+          unloading_address,
+          unloading_city,
+          unloading_country,
+          unloading_postal_code,
+          unloading_date,
+          unloading_phone_number,
+          loading_address,
+          loading_city,
+          loading_country,
+          loading_postal_code,
+          loading_date,
+        ) => {
+          const transfer = new Transfer();
+          transfer.order_id = order_id;
+          transfer.status = status;
+          transfer.transfer_id = transfer_id;
+          transfer.vaz_number = vaz_number;
+          transfer.invoice_date = invoice_date;
+          transfer.transport_id = transport_id;
+          transfer.worker_id = worker_id;
+          transfer.unloading_address = unloading_address;
+          transfer.unloading_city = unloading_city;
+          transfer.unloading_country = unloading_country;
+          transfer.unloading_postal_code = unloading_postal_code;
+          transfer.unloading_date = unloading_date;
+          transfer.unloading_phone_number = unloading_phone_number;
+          transfer.loading_address = loading_address;
+          transfer.loading_city = loading_city;
+          transfer.loading_country = loading_country;
+          transfer.loading_postal_code = loading_postal_code;
+          transfer.loading_date = loading_date;
+          return transfer;
+        })(
+          order_id,
+          status,
+          transfer_id,
+          vaz_number,
+          invoice_date,
+          transport_id,
+          worker_id,
+          unloading_address,
+          unloading_city,
+          unloading_country,
+          unloading_postal_code,
+          unloading_date,
+          unloading_phone_number,
+          loading_address,
+          loading_city,
+          loading_country,
+          loading_postal_code,
+          loading_date,
+        ),
+      )
+    ).transfer_id;
+    for (
+      let productRow = 0;
+      productRow < formData.productRows.length;
+      productRow++
+    ) {
       const blueprintId = formData.productRows[productRow].blueprint_id;
       const partsCount = formData.productRows[productRow].quantity;
       const packs = formData.productRows[productRow].packs;
@@ -160,7 +164,10 @@ export class TransfersController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async editTransferFormPost(@Param('id') transferId: number, @Body() formData: any): Promise<object> {
+  async editTransferFormPost(
+    @Param('id') transferId: number,
+    @Body() formData: any,
+  ): Promise<object> {
     const content = {
       errors: [],
     };
@@ -181,14 +188,18 @@ export class TransfersController {
     const loading_country = formData.loading_country;
     const loading_postal_code = formData.loading_postal_code;
     const loading_date = formData.loading_date;
-    
+
     if (!order_id && status) {
-      content.errors = ["order_id must be selected!"]; 
+      content.errors = ['order_id must be selected!'];
       return content;
     }
     const transfer = await this.transfersService.findOne(transferId);
     const transferItems = [];
-    for (let productRow = 0; productRow < formData.productRows.length; productRow++) {
+    for (
+      let productRow = 0;
+      productRow < formData.productRows.length;
+      productRow++
+    ) {
       const blueprintId = formData.productRows[productRow].blueprint_id;
       const partsCount = formData.productRows[productRow].quantity;
       const packs = formData.productRows[productRow].packs;
@@ -219,7 +230,9 @@ export class TransfersController {
     transfer.loading_postal_code = loading_postal_code;
     transfer.loading_date = loading_date;
 
-    await this.transferItemsService.removeTransferItems(transfer.transfer_items);
+    await this.transferItemsService.removeTransferItems(
+      transfer.transfer_items,
+    );
     await this.transferItemsService.createTransferItems(transferItems);
     await this.transfersService.updateTransfer(transferId, transfer);
 
@@ -259,7 +272,9 @@ export class TransfersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('by-status/:status')
-  async getTransfersByStatus(@Param('status') status: string): Promise<Transfer[]> {
+  async getTransfersByStatus(
+    @Param('status') status: string,
+  ): Promise<Transfer[]> {
     return await this.transfersService.getTransfersByStatus(status);
   }
 
@@ -304,5 +319,4 @@ export class TransfersController {
   async getIdForNewInvoice(): Promise<number> {
     return (await this.transfersService.getLastTransferId()) + 1;
   }
-
 }

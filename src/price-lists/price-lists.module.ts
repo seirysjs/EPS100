@@ -13,7 +13,9 @@ import { PricesService } from 'src/prices/prices.service';
 import { BillPayment } from 'src/bills/bill-payment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PriceList, Price, Bill, Order, BillPayment])],
+  imports: [
+    TypeOrmModule.forFeature([PriceList, Price, Bill, Order, BillPayment]),
+  ],
   controllers: [PriceListsController],
   providers: [PriceListsService, PricesService, OrdersService, BillsService],
   exports: [TypeOrmModule],

@@ -16,9 +16,26 @@ import { BillItemsService } from 'src/bill-items/bill-items.service';
 import { BillItem } from 'src/bill-items/bill-item.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([WarehouseItem, Blueprint, Worker, OrderItem, OrderItemFulfill, TransferItem, BillItem])],
+  imports: [
+    TypeOrmModule.forFeature([
+      WarehouseItem,
+      Blueprint,
+      Worker,
+      OrderItem,
+      OrderItemFulfill,
+      TransferItem,
+      BillItem,
+    ]),
+  ],
   controllers: [WarehouseItemsController],
-  providers: [WarehouseItemsService, BlueprintsService, WorkersService, OrderItemsService, TransferItemsService, BillItemsService],
+  providers: [
+    WarehouseItemsService,
+    BlueprintsService,
+    WorkersService,
+    OrderItemsService,
+    TransferItemsService,
+    BillItemsService,
+  ],
   exports: [TypeOrmModule],
 })
 export class WarehouseItemsModule {}

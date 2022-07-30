@@ -1,10 +1,7 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
@@ -66,7 +63,10 @@ export class Blueprint {
   })
   order_items: OrderItem[];
 
-  @OneToMany(() => OrderItemFulfill, (orderItemFulfill: OrderItemFulfill) => orderItemFulfill.blueprint)
+  @OneToMany(
+    () => OrderItemFulfill,
+    (orderItemFulfill: OrderItemFulfill) => orderItemFulfill.blueprint,
+  )
   @JoinColumn({
     name: 'blueprint_id',
     referencedColumnName: 'blueprint_id',
@@ -80,7 +80,10 @@ export class Blueprint {
   })
   block_cuts: BlockCut[];
 
-  @OneToMany(() => TransferItem, (transferItem: TransferItem) => transferItem.blueprint)
+  @OneToMany(
+    () => TransferItem,
+    (transferItem: TransferItem) => transferItem.blueprint,
+  )
   @JoinColumn({
     name: 'blueprint_id',
     referencedColumnName: 'blueprint_id',

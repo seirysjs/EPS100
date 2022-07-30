@@ -1,13 +1,9 @@
 import { Blueprint } from 'src/blueprints/blueprint.entity';
 import { Order } from 'src/orders/order.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -29,7 +25,10 @@ export class OrderItemFulfill {
   @Column('datetime', { default: null })
   fulfilled_date: Date;
 
-  @ManyToOne(() => Blueprint, (blueprint: Blueprint) => blueprint.order_item_fulfills)
+  @ManyToOne(
+    () => Blueprint,
+    (blueprint: Blueprint) => blueprint.order_item_fulfills,
+  )
   @JoinColumn({
     name: 'blueprint_id',
     referencedColumnName: 'blueprint_id',

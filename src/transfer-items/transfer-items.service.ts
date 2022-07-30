@@ -26,13 +26,30 @@ export class TransferItemsService {
 
   async findAll(): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.order', 'transfer.order.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.order',
+        'transfer.order.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
   async findOne(id: number): Promise<TransferItem> {
     return await this.transferItemsRepository.findOne(id, {
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'],
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
     });
   }
 
@@ -42,7 +59,9 @@ export class TransferItemsService {
 
   async removeTransferItems(transferItems: TransferItem[]): Promise<void> {
     for (let length = 0; length < transferItems.length; length++) {
-      await this.transferItemsRepository.delete(transferItems[length].transfer_item_id);
+      await this.transferItemsRepository.delete(
+        transferItems[length].transfer_item_id,
+      );
     }
     return;
   }
@@ -54,43 +73,116 @@ export class TransferItemsService {
     return;
   }
 
-  async updateTransferItem(transferItemId: number, transferItem: TransferItem): Promise<object> {
-    return await this.transferItemsRepository.update(transferItemId, transferItem);
+  async updateTransferItem(
+    transferItemId: number,
+    transferItem: TransferItem,
+  ): Promise<object> {
+    return await this.transferItemsRepository.update(
+      transferItemId,
+      transferItem,
+    );
   }
 
   async findAllForTransfer(transferId: number): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { transfer_id: transferId }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { transfer_id: transferId },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
   async findAllinWIPTransfer(): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { "transfer": { status: "wip" } }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { transfer: { status: 'wip' } },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
   async findAllByBlueprint(blueprintId: number): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
-  async findAllWIPTransferByBlueprint(blueprintId: number): Promise<TransferItem[]> {
+  async findAllWIPTransferByBlueprint(
+    blueprintId: number,
+  ): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId, "transfer": { status: "wip" } }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId, transfer: { status: 'wip' } },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
   async findAllByClass(productClassId: number): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { 'blueprint': { product_class_id: productClassId } }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint: { product_class_id: productClassId } },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 
-  async findAllWIPTransferByClass(productClassId: number): Promise<TransferItem[]> {
+  async findAllWIPTransferByClass(
+    productClassId: number,
+  ): Promise<TransferItem[]> {
     return await this.transferItemsRepository.find({
-      relations: ['transfer', 'transfer.transfer_items', 'transfer.client', 'transfer.transport', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { 'blueprint': { product_class_id: productClassId }, 'transfer': { status: 'wip' } }, order: { transfer_item_id: "DESC" }
+      relations: [
+        'transfer',
+        'transfer.transfer_items',
+        'transfer.client',
+        'transfer.transport',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: {
+        blueprint: { product_class_id: productClassId },
+        transfer: { status: 'wip' },
+      },
+      order: { transfer_item_id: 'DESC' },
     });
   }
 }

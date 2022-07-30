@@ -1,18 +1,14 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
-import { ProductClass } from 'src/product-classes/product-class.entity';
 import { Worker } from 'src/workers/worker.entity';
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator';
 import { Block } from './block.entity';
 import { BlockCut } from './block-cut.entity';
 import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
@@ -55,7 +51,10 @@ export class BlockMultiCut {
   })
   block_cuts: BlockCut[];
 
-  @OneToMany(() => WarehouseItem, (warehouseItem: WarehouseItem) => warehouseItem.block_multi_cut)
+  @OneToMany(
+    () => WarehouseItem,
+    (warehouseItem: WarehouseItem) => warehouseItem.block_multi_cut,
+  )
   @JoinColumn({
     name: 'block_multi_cut_id',
     referencedColumnName: 'block_multi_cut_id',

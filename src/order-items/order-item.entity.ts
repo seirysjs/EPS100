@@ -1,13 +1,9 @@
 import { Blueprint } from 'src/blueprints/blueprint.entity';
 import { Order } from 'src/orders/order.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';

@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   Post,
-  Render,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -20,35 +19,43 @@ export class WarehouseItemsController {
     private readonly warehouseItemsService: WarehouseItemsService,
     private readonly orderItemsService: OrderItemsService,
     private readonly blueprintsService: BlueprintsService,
-    ) {}
+  ) {}
 
-    @UseGuards(JwtAuthGuard)
-    @Get('inventory/by-class/:id')
-    async stackWarehouseItemsByClass(@Param('id') id: number): Promise<object> {
-      const warehouseItems = await this.warehouseItemsService.findAllByClass(id);
-      const stackedBlueprintsQty = {};
-      const stackedOrderQty = {};
-      const stackedWarehouseItems = [];
-      const orderItems = await this.orderItemsService.findAllWIPByClass(id);
+  @UseGuards(JwtAuthGuard)
+  @Get('inventory/by-class/:id')
+  async stackWarehouseItemsByClass(@Param('id') id: number): Promise<object> {
+    const warehouseItems = await this.warehouseItemsService.findAllByClass(id);
+    const stackedBlueprintsQty = {};
+    const stackedOrderQty = {};
+    const stackedWarehouseItems = [];
+    const orderItems = await this.orderItemsService.findAllWIPByClass(id);
 
-      warehouseItems.forEach(warehouseItem => {
-        if (!stackedBlueprintsQty[warehouseItem.blueprint_id]) 
+    warehouseItems.forEach((warehouseItem) => {
+      if (!stackedBlueprintsQty[warehouseItem.blueprint_id])
         stackedBlueprintsQty[warehouseItem.blueprint_id] = 0;
-        stackedBlueprintsQty[warehouseItem.blueprint_id] += warehouseItem.count;
-      });
-      orderItems.forEach(orderItem => {
-        if (!stackedOrderQty[orderItem.blueprint_id]) 
+      stackedBlueprintsQty[warehouseItem.blueprint_id] += warehouseItem.count;
+    });
+    orderItems.forEach((orderItem) => {
+      if (!stackedOrderQty[orderItem.blueprint_id])
         stackedOrderQty[orderItem.blueprint_id] = 0;
-        if (!stackedBlueprintsQty[orderItem.blueprint_id])
+      if (!stackedBlueprintsQty[orderItem.blueprint_id])
         stackedBlueprintsQty[orderItem.blueprint_id] = 0;
-        stackedOrderQty[orderItem.blueprint_id] += orderItem.count;
+      stackedOrderQty[orderItem.blueprint_id] += orderItem.count;
+    });
+    for (const [blueprint_id, qty] of Object.entries(stackedBlueprintsQty)) {
+      const blueprint = await this.blueprintsService.findOne(
+        parseInt(blueprint_id),
+      );
+      stackedWarehouseItems.push({
+        blueprint: blueprint,
+        count: qty,
+        orderStack: stackedOrderQty[blueprint_id]
+          ? stackedOrderQty[blueprint_id]
+          : '0',
       });
-      for (const [blueprint_id, qty] of Object.entries(stackedBlueprintsQty)) {
-        const blueprint = await this.blueprintsService.findOne(parseInt(blueprint_id));
-        stackedWarehouseItems.push({blueprint: blueprint, count: qty, orderStack: (stackedOrderQty[blueprint_id]) ? stackedOrderQty[blueprint_id] : "0"});
-      }
-      return stackedWarehouseItems;
     }
+    return stackedWarehouseItems;
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('inventory')
@@ -59,30 +66,42 @@ export class WarehouseItemsController {
     const stackedWarehouseItems = [];
     const orderItems = await this.orderItemsService.findAllinWIP();
 
-    warehouseItems.forEach(warehouseItem => {
-      if (!stackedBlueprintsQty[warehouseItem.blueprint_id]) 
-      stackedBlueprintsQty[warehouseItem.blueprint_id] = 0;
+    warehouseItems.forEach((warehouseItem) => {
+      if (!stackedBlueprintsQty[warehouseItem.blueprint_id])
+        stackedBlueprintsQty[warehouseItem.blueprint_id] = 0;
       stackedBlueprintsQty[warehouseItem.blueprint_id] += warehouseItem.count;
     });
-    orderItems.forEach(orderItem => {
-      if (!stackedOrderQty[orderItem.blueprint_id]) 
-      stackedOrderQty[orderItem.blueprint_id] = 0;
+    orderItems.forEach((orderItem) => {
+      if (!stackedOrderQty[orderItem.blueprint_id])
+        stackedOrderQty[orderItem.blueprint_id] = 0;
       if (!stackedBlueprintsQty[orderItem.blueprint_id])
-      stackedBlueprintsQty[orderItem.blueprint_id] = 0;
+        stackedBlueprintsQty[orderItem.blueprint_id] = 0;
       stackedOrderQty[orderItem.blueprint_id] += orderItem.count;
     });
     for (const [blueprint_id, qty] of Object.entries(stackedBlueprintsQty)) {
-      const blueprint = await this.blueprintsService.findOne(parseInt(blueprint_id));
-      stackedWarehouseItems.push({blueprint: blueprint, count: qty, orderStack: (stackedOrderQty[blueprint_id]) ? stackedOrderQty[blueprint_id] : "0"});
+      const blueprint = await this.blueprintsService.findOne(
+        parseInt(blueprint_id),
+      );
+      stackedWarehouseItems.push({
+        blueprint: blueprint,
+        count: qty,
+        orderStack: stackedOrderQty[blueprint_id]
+          ? stackedOrderQty[blueprint_id]
+          : '0',
+      });
     }
     return stackedWarehouseItems;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/blueprint')
-  async findByWarehouseItemBlueprint(@Param('id') id: number): Promise<WarehouseItem[]> {
-    const warehouseItem = (await this.warehouseItemsService.findOne(id));
-    const warehouseItems = await this.warehouseItemsService.findAllByBlueprint(warehouseItem.blueprint_id);
+  async findByWarehouseItemBlueprint(
+    @Param('id') id: number,
+  ): Promise<WarehouseItem[]> {
+    const warehouseItem = await this.warehouseItemsService.findOne(id);
+    const warehouseItems = await this.warehouseItemsService.findAllByBlueprint(
+      warehouseItem.blueprint_id,
+    );
     return warehouseItems;
   }
 
@@ -94,8 +113,14 @@ export class WarehouseItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async update(@Body() warehouseItem: WarehouseItem, @Param('id') id: number): Promise<WarehouseItem> {
-    return await this.warehouseItemsService.updateWarehouseItemEntry(id, warehouseItem);
+  async update(
+    @Body() warehouseItem: WarehouseItem,
+    @Param('id') id: number,
+  ): Promise<WarehouseItem> {
+    return await this.warehouseItemsService.updateWarehouseItemEntry(
+      id,
+      warehouseItem,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

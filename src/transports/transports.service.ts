@@ -24,7 +24,8 @@ export class TransportsService {
 
   async findAll(): Promise<Transport[]> {
     return await this.transportsRepository.find({
-      relations: ['orders'], order: { transport_id: "DESC" }
+      relations: ['orders'],
+      order: { transport_id: 'DESC' },
     });
   }
 
@@ -45,7 +46,10 @@ export class TransportsService {
     return;
   }
 
-  async updateTransport(transportId: number, transportDto: Transport): Promise<Transport> {
+  async updateTransport(
+    transportId: number,
+    transportDto: Transport,
+  ): Promise<Transport> {
     const transport = new Transport();
     transport.name = transportDto.name;
     transport.number = transportDto.number;

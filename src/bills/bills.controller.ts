@@ -19,16 +19,16 @@ import { PriceListsService } from 'src/price-lists/price-lists.service';
 @Controller('bills')
 export class BillsController {
   constructor(
-    private readonly billsService: BillsService, 
-    private readonly priceListsService: PriceListsService, 
+    private readonly billsService: BillsService,
+    private readonly priceListsService: PriceListsService,
     private readonly billItemsService: BillItemsService,
-    ) {}
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('new')
   async newBillFormPost(@Body() formData: any): Promise<object> {
     const content = {
-      errors: []
+      errors: [],
     };
     const order_id = formData.order_id;
     const price_list_id = formData.price_list_id;
@@ -39,46 +39,51 @@ export class BillsController {
     const bill_items = formData.productRows;
 
     if (!order_id || order_id == 0) {
-      content.errors = [{ property: "order_id", constraints:["order_id must be selected!"]}]; 
+      content.errors = [
+        { property: 'order_id', constraints: ['order_id must be selected!'] },
+      ];
       return content;
     }
 
     if (bill_items.length == 0) return content;
 
     let bill_quantity = 0;
-    for (let billItemIndex = 0; billItemIndex < bill_items.length; billItemIndex++) {
+    for (
+      let billItemIndex = 0;
+      billItemIndex < bill_items.length;
+      billItemIndex++
+    ) {
       const bill_item = bill_items[billItemIndex];
       bill_quantity += bill_item.quantityM3;
     }
     if (bill_quantity == 0) return content;
 
-    const billId = (await this.billsService.create((
-      (
-        order_id,
-        price_list_id,
-        bill_id,
-        bill_date,
-        days_postponed,
-        note,
-      ) => {
-      const bill = new Bill();
-      bill.order_id = order_id;
-      bill.price_list_id = price_list_id;
-      bill.bill_id = bill_id;
-      bill.bill_date = bill_date;
-      bill.days_postponed = days_postponed;
-      bill.note = note;
-      return bill;
-    })
-    (
-      order_id,
-      price_list_id,
-      bill_id,
-      bill_date,
-      days_postponed,
-      note,
-    ))).bill_id;
-    for (let productRow = 0; productRow < formData.productRows.length; productRow++) {
+    const billId = (
+      await this.billsService.create(
+        ((
+          order_id,
+          price_list_id,
+          bill_id,
+          bill_date,
+          days_postponed,
+          note,
+        ) => {
+          const bill = new Bill();
+          bill.order_id = order_id;
+          bill.price_list_id = price_list_id;
+          bill.bill_id = bill_id;
+          bill.bill_date = bill_date;
+          bill.days_postponed = days_postponed;
+          bill.note = note;
+          return bill;
+        })(order_id, price_list_id, bill_id, bill_date, days_postponed, note),
+      )
+    ).bill_id;
+    for (
+      let productRow = 0;
+      productRow < formData.productRows.length;
+      productRow++
+    ) {
       const blueprintId = formData.productRows[productRow].blueprint_id;
       const partsCount = formData.productRows[productRow].quantity;
       if (!blueprintId || !partsCount || blueprintId == 0) continue;
@@ -107,12 +112,18 @@ export class BillsController {
 
   @UseGuards(JwtAuthGuard)
   @Post('payment/:id/')
-  async updateBillPaymentPost(@Param('id') billPaymentId: number, @Body() formData: any): Promise<object> {
+  async updateBillPaymentPost(
+    @Param('id') billPaymentId: number,
+    @Body() formData: any,
+  ): Promise<object> {
     const content = {
       errors: [],
     };
-    const billPaymentValidation = await this.billsService.validationBillPayment(formData);
-    if (billPaymentValidation.length != 0) return { errors: billPaymentValidation };
+    const billPaymentValidation = await this.billsService.validationBillPayment(
+      formData,
+    );
+    if (billPaymentValidation.length != 0)
+      return { errors: billPaymentValidation };
 
     await this.billsService.updateBillPayment(billPaymentId, formData);
     return content;
@@ -125,16 +136,22 @@ export class BillsController {
       errors: [],
     };
 
-    const billPaymentValidation = await this.billsService.validationBillPayment(formData);
-    if (billPaymentValidation.length != 0) return { errors: billPaymentValidation };
-    
+    const billPaymentValidation = await this.billsService.validationBillPayment(
+      formData,
+    );
+    if (billPaymentValidation.length != 0)
+      return { errors: billPaymentValidation };
+
     await this.billsService.createBillPayment(formData);
     return content;
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async editBillFormPost(@Param('id') billId: number, @Body() formData: any): Promise<object> {
+  async editBillFormPost(
+    @Param('id') billId: number,
+    @Body() formData: any,
+  ): Promise<object> {
     const content = {
       errors: [],
     };
@@ -143,14 +160,20 @@ export class BillsController {
     const bill_date = formData.bill_date;
     const days_postponed = formData.days_postponed;
     const note = formData.note;
-    
+
     if (!order_id) {
-      content.errors = [{ property: "order_id", constraints:["order_id must be selected!"]}]; 
+      content.errors = [
+        { property: 'order_id', constraints: ['order_id must be selected!'] },
+      ];
       return content;
     }
     const bill = await this.billsService.findOne(billId);
     const billItems = [];
-    for (let productRow = 0; productRow < formData.productRows.length; productRow++) {
+    for (
+      let productRow = 0;
+      productRow < formData.productRows.length;
+      productRow++
+    ) {
       const blueprintId = formData.productRows[productRow].blueprint_id;
       const partsCount = formData.productRows[productRow].quantity;
       if (!blueprintId || !partsCount || blueprintId == 0) continue;
@@ -249,18 +272,14 @@ export class BillsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('payment/:id')
-  async getBillPayment(
-    @Param('id') id: number,
-  ): Promise<BillPayment> {
+  async getBillPayment(@Param('id') id: number): Promise<BillPayment> {
     const billPayment = await this.billsService.getBillPayment(id);
     return billPayment;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('payments-by-bill/:id')
-  async getBillPaymentsByBill(
-    @Param('id') id: number,
-  ): Promise<BillPayment[]> {
+  async getBillPaymentsByBill(@Param('id') id: number): Promise<BillPayment[]> {
     const billPayments = await this.billsService.getBillPaymentsByBill(id);
     return billPayments;
   }
@@ -282,5 +301,4 @@ export class BillsController {
     const billPayments = await this.billsService.getBillPaymentsByClient(id);
     return billPayments;
   }
-
 }

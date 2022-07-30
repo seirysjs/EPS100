@@ -1,16 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { Order } from 'src/orders/order.entity';
-import {
-  ManyToMany,
-  JoinTable,
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {

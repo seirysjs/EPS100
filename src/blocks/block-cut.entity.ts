@@ -1,19 +1,15 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
-import { ProductClass } from 'src/product-classes/product-class.entity';
 import { Worker } from 'src/workers/worker.entity';
 import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNumber } from 'class-validator';
 import { Block } from './block.entity';
 import { Blueprint } from 'src/blueprints/blueprint.entity';
 import { BlockMultiCut } from './block-multi-cut.entity';
@@ -26,10 +22,10 @@ export class BlockCut {
   @PrimaryGeneratedColumn()
   block_cut_id: number;
 
-  @Column('int', { default: null, })
+  @Column('int', { default: null })
   block_multi_cut_id: number;
 
-  @Column('int', { default: null, })
+  @Column('int', { default: null })
   block_id: number;
 
   @IsNumber()
@@ -56,7 +52,10 @@ export class BlockCut {
   })
   blueprint: Blueprint;
 
-  @ManyToOne(() => BlockMultiCut, (blockMultiCut: BlockMultiCut) => blockMultiCut.block_cuts)
+  @ManyToOne(
+    () => BlockMultiCut,
+    (blockMultiCut: BlockMultiCut) => blockMultiCut.block_cuts,
+  )
   @JoinColumn({
     name: 'block_multi_cut_id',
     referencedColumnName: 'block_multi_cut_id',
@@ -70,7 +69,7 @@ export class BlockCut {
   })
   worker: Worker;
 
-  @OneToOne(() => WarehouseItem, warehouseItem => warehouseItem.block_cut)
+  @OneToOne(() => WarehouseItem, (warehouseItem) => warehouseItem.block_cut)
   warehouse_item: WarehouseItem;
 
   @ManyToOne(() => Block, (block: Block) => block.warehouse_items)

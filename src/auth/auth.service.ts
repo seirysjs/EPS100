@@ -6,14 +6,12 @@ import { jwtSecret } from './jwtGenKey';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
     if (user && user.password === pass) {
-      const { password, ...result } = user;
+      const { ...result } = user;
       return result;
     }
     return null;

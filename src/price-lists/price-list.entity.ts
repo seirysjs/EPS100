@@ -1,20 +1,15 @@
-
 import { Order } from 'src/orders/order.entity';
 import { Price } from 'src/prices/price.entity';
 import { Bill } from 'src/bills/bill.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
-  ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 @Entity({ name: 'price_lists' })
 export class PriceList {
@@ -23,10 +18,10 @@ export class PriceList {
 
   @IsString()
   @IsNotEmpty()
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   name: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   note: string;
 
   @IsDate()

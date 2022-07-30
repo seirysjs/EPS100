@@ -1,14 +1,10 @@
-import { IsNotEmpty, isNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { Order } from 'src/orders/order.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
-  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
@@ -36,23 +32,23 @@ export class Client {
   @Column('varchar')
   country: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   postal_code: string;
 
   @IsNotEmpty()
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   phone: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   company_code: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   vat_code: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   banks_name: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   account_number: string;
 
   @OneToMany(() => Order, (order: Order) => order.client)

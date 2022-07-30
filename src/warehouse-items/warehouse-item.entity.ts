@@ -1,11 +1,8 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
-  OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
@@ -52,7 +49,10 @@ export class WarehouseItem {
   })
   block: Block;
 
-  @ManyToOne(() => BlockMultiCut, (blockMultiCut: BlockMultiCut) => blockMultiCut.warehouse_items)
+  @ManyToOne(
+    () => BlockMultiCut,
+    (blockMultiCut: BlockMultiCut) => blockMultiCut.warehouse_items,
+  )
   @JoinColumn({
     name: 'block_multi_cut_id',
     referencedColumnName: 'block_multi_cut_id',
@@ -72,10 +72,10 @@ export class WarehouseItem {
   @Column('int')
   block_cut_id: number;
 
-  @OneToOne(() => BlockCut, blockCut => blockCut.warehouse_item)
+  @OneToOne(() => BlockCut, (blockCut) => blockCut.warehouse_item)
   @JoinColumn({
     name: 'block_cut_id',
-    referencedColumnName: 'block_cut_id'
+    referencedColumnName: 'block_cut_id',
   })
   block_cut: BlockCut;
 }

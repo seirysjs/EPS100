@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Transport } from './transport.entity';
 import { TransportsService } from './transports.service';
@@ -12,7 +20,7 @@ export class TransportsController {
   async create(@Body() transport: Transport): Promise<object> {
     const content = {
       errors: [],
-    }
+    };
     const validation = await this.transportsService.validation(transport);
     if (validation.length != 0) {
       content.errors = validation;
@@ -36,10 +44,13 @@ export class TransportsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async update(@Body() transport: Transport, @Param('id') id: number): Promise<object> {
+  async update(
+    @Body() transport: Transport,
+    @Param('id') id: number,
+  ): Promise<object> {
     const content = {
       errors: [],
-    }
+    };
     const validation = await this.transportsService.validation(transport);
     if (validation.length != 0) {
       content.errors = validation;

@@ -16,9 +16,25 @@ import { Order } from 'src/orders/order.entity';
 import { OrdersService } from 'src/orders/orders.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transfer, Blueprint, Client, TransferItem, WarehouseItem, Order])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Transfer,
+      Blueprint,
+      Client,
+      TransferItem,
+      WarehouseItem,
+      Order,
+    ]),
+  ],
   controllers: [TransfersController],
-  providers: [TransfersService, BlueprintsService, ClientsService, TransferItemsService, OrdersService, WarehouseItemsService],
+  providers: [
+    TransfersService,
+    BlueprintsService,
+    ClientsService,
+    TransferItemsService,
+    OrdersService,
+    WarehouseItemsService,
+  ],
   exports: [TypeOrmModule],
 })
 export class TransfersModule {}

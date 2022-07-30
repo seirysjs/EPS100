@@ -2,14 +2,10 @@ import { IsNotEmpty } from 'class-validator';
 import { Order } from 'src/orders/order.entity';
 import { Transfer } from 'src/transfers/transfer.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
-  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
@@ -19,11 +15,11 @@ export class Transport {
   transport_id: number;
 
   @IsNotEmpty()
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   number: string;
 
   @IsNotEmpty()
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   name: string;
 
   @Column('int', { default: 0 })

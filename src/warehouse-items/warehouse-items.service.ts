@@ -22,7 +22,8 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ], order: { warehouse_item_id: "DESC" }
+      ],
+      order: { warehouse_item_id: 'DESC' },
     });
   }
 
@@ -34,8 +35,9 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ], where: {worker_id: id},
-       order: { warehouse_item_id: "DESC" }
+      ],
+      where: { worker_id: id },
+      order: { warehouse_item_id: 'DESC' },
     });
   }
 
@@ -47,8 +49,9 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ], where: {block_id: id},
-       order: { warehouse_item_id: "DESC" }
+      ],
+      where: { block_id: id },
+      order: { warehouse_item_id: 'DESC' },
     });
   }
 
@@ -60,8 +63,9 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ], where: {blueprint_id: id},
-       order: { warehouse_item_id: "DESC" }
+      ],
+      where: { blueprint_id: id },
+      order: { warehouse_item_id: 'DESC' },
     });
   }
 
@@ -73,8 +77,9 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ], where: { blueprint: { product_class_id: id }},
-       order: { warehouse_item_id: "DESC" }
+      ],
+      where: { blueprint: { product_class_id: id } },
+      order: { warehouse_item_id: 'DESC' },
     });
   }
 
@@ -86,7 +91,7 @@ export class WarehouseItemsService {
         'blueprint',
         'blueprint.product_class',
         'blueprint.product_size',
-      ]
+      ],
     });
   }
 
@@ -104,29 +109,68 @@ export class WarehouseItemsService {
   }
 
   async forWorker(id: number): Promise<WarehouseItem[]> {
-    return await this.warehouseItemsRepository.find({ relations: ['worker', 'block', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { worker_id: id }, order: { warehouse_item_id: "DESC" } });
+    return await this.warehouseItemsRepository.find({
+      relations: [
+        'worker',
+        'block',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { worker_id: id },
+      order: { warehouse_item_id: 'DESC' },
+    });
   }
 
   async forBlueprint(id: number): Promise<WarehouseItem[]> {
-    return await this.warehouseItemsRepository.find({ relations: ['worker', 'block', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: id }, order: { warehouse_item_id: "DESC" } });
+    return await this.warehouseItemsRepository.find({
+      relations: [
+        'worker',
+        'block',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: id },
+      order: { warehouse_item_id: 'DESC' },
+    });
   }
 
-  async updateWarehouseItemEntry(id: number, warehouseItem: WarehouseItem): Promise<WarehouseItem> {
+  async updateWarehouseItemEntry(
+    id: number,
+    warehouseItem: WarehouseItem,
+  ): Promise<WarehouseItem> {
     const warehouseItemEntry = {
       blueprint_id: warehouseItem.blueprint_id,
       block_id: warehouseItem.block_id,
       worker_id: warehouseItem.worker_id,
       created_at: warehouseItem.created_at,
-      count: warehouseItem.count
+      count: warehouseItem.count,
     };
     await this.warehouseItemsRepository.update(id, warehouseItemEntry);
     return await this.findOne(id);
   }
 
-  async substractBluerprintItem(blueprintId: number, substractAmount: any): Promise<WarehouseItem[]> {
-    if (substractAmount < 0) substractAmount = substractAmount * (-1);
-    const warehouseItems = await this.warehouseItemsRepository.find({ relations: ['worker', 'block', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId }});
-    for (let blueprintItemEntry = 0; blueprintItemEntry < warehouseItems.length; blueprintItemEntry++) {
+  async substractBluerprintItem(
+    blueprintId: number,
+    substractAmount: any,
+  ): Promise<WarehouseItem[]> {
+    if (substractAmount < 0) substractAmount = substractAmount * -1;
+    const warehouseItems = await this.warehouseItemsRepository.find({
+      relations: [
+        'worker',
+        'block',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId },
+    });
+    for (
+      let blueprintItemEntry = 0;
+      blueprintItemEntry < warehouseItems.length;
+      blueprintItemEntry++
+    ) {
       if (substractAmount == 0) continue;
       const itemEntry = warehouseItems[blueprintItemEntry];
       if (itemEntry.count <= substractAmount) {
@@ -136,8 +180,21 @@ export class WarehouseItemsService {
       }
       itemEntry.count -= substractAmount;
       substractAmount = 0;
-      await this.updateWarehouseItemEntry(itemEntry.warehouse_item_id, itemEntry);
+      await this.updateWarehouseItemEntry(
+        itemEntry.warehouse_item_id,
+        itemEntry,
+      );
     }
-    return await this.warehouseItemsRepository.find({ relations: ['worker', 'block', 'blueprint', 'blueprint.product_class', 'blueprint.product_size'], where: { blueprint_id: blueprintId }, order: { warehouse_item_id: "DESC" } });
+    return await this.warehouseItemsRepository.find({
+      relations: [
+        'worker',
+        'block',
+        'blueprint',
+        'blueprint.product_class',
+        'blueprint.product_size',
+      ],
+      where: { blueprint_id: blueprintId },
+      order: { warehouse_item_id: 'DESC' },
+    });
   }
 }

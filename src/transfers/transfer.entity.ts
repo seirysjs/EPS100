@@ -4,18 +4,15 @@ import { Transport } from 'src/transports/transport.entity';
 import { Worker } from 'src/workers/worker.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
-export type TransferStatusType = 'open' | 'wip' | 'done' | 'void' ;
+export type TransferStatusType = 'open' | 'wip' | 'done' | 'void';
 
 @Entity({ name: 'transfers' })
 export class Transfer {
@@ -25,10 +22,10 @@ export class Transfer {
   @Column('int')
   order_id: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   vaz_number: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   invoice_number: string;
 
   @Column({
@@ -46,40 +43,43 @@ export class Transfer {
   @Column('int', { default: null })
   worker_id: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   loading_address: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   loading_city: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   loading_country: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   loading_postal_code: string;
 
   @Column('datetime', { default: null })
   loading_date: Date;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   unloading_address: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   unloading_city: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   unloading_country: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   unloading_postal_code: string;
 
   @Column('datetime', { default: null })
   unloading_date: Date;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   unloading_phone_number: string;
 
-  @OneToMany(() => TransferItem, (transferItem: TransferItem) => transferItem.transfer)
+  @OneToMany(
+    () => TransferItem,
+    (transferItem: TransferItem) => transferItem.transfer,
+  )
   @JoinColumn({
     name: 'transfer_id',
     referencedColumnName: 'transfer_id',

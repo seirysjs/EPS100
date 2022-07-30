@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { BillItem } from './bill-item.entity';
 import { BillItemsService } from './bill-items.service';
@@ -30,7 +38,7 @@ export class BillItemsController {
   async findAllByBlueprint(@Param('id') id: number): Promise<BillItem[]> {
     return await this.billItemsService.findAllByBlueprint(id);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get('by-bill/:id')
   async findAllByBill(@Param('id') id: number): Promise<BillItem[]> {
@@ -51,17 +59,21 @@ export class BillItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('wip-by-blueprint/:id')
-  async findAllWIPBillByBlueprint(@Param('id') id: number): Promise<BillItem[]> {
+  async findAllWIPBillByBlueprint(
+    @Param('id') id: number,
+  ): Promise<BillItem[]> {
     return await this.billItemsService.findAllWIPBillByBlueprint(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async update(@Body() billItem: BillItem, @Param('id') id: number): Promise<BillItem> {
+  async update(
+    @Body() billItem: BillItem,
+    @Param('id') id: number,
+  ): Promise<BillItem> {
     await this.billItemsService.updateBillItem(id, billItem);
     return await this.billItemsService.findOne(id);
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

@@ -17,14 +17,14 @@ export class ProductClassService {
   async findAll(): Promise<ProductClass[]> {
     return this.productClassRepository.find({
       relations: [
-        'blueprints', 
-        'blueprints.product_size', 
-        'blueprints.warehouse_items', 
-        'blueprints.order_items', 
-        'blueprints.transfer_items', 
-        'blocks', 
-        'blocks.warehouse_items',  
-        'blocks.block_cut'
+        'blueprints',
+        'blueprints.product_size',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.transfer_items',
+        'blocks',
+        'blocks.warehouse_items',
+        'blocks.block_cut',
       ],
     });
   }
@@ -32,14 +32,14 @@ export class ProductClassService {
   async findOne(id: number): Promise<ProductClass> {
     return await this.productClassRepository.findOne(id, {
       relations: [
-        'blueprints', 
-        'blueprints.product_size', 
-        'blueprints.warehouse_items', 
-        'blueprints.order_items', 
-        'blueprints.transfer_items', 
-        'blocks', 
-        'blocks.warehouse_items', 
-        'blocks.block_cut'
+        'blueprints',
+        'blueprints.product_size',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.transfer_items',
+        'blocks',
+        'blocks.warehouse_items',
+        'blocks.block_cut',
       ],
     });
   }
@@ -47,16 +47,16 @@ export class ProductClassService {
   async findByName(name: string): Promise<ProductClass[]> {
     return await this.productClassRepository.find({
       relations: [
-        'blueprints', 
-        'blueprints.product_size', 
-        'blueprints.warehouse_items', 
-        'blueprints.order_items', 
-        'blueprints.transfer_items', 
-        'blocks', 
-        'blocks.warehouse_items', 
-        'blocks.block_cut'
+        'blueprints',
+        'blueprints.product_size',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.transfer_items',
+        'blocks',
+        'blocks.warehouse_items',
+        'blocks.block_cut',
       ],
-    where: { name: name },
+      where: { name: name },
     });
   }
 

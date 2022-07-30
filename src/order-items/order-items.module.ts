@@ -11,7 +11,14 @@ import { BillItem } from 'src/bill-items/bill-item.entity';
 import { BillItemsService } from 'src/bill-items/bill-items.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OrderItem, OrderItemFulfill, TransferItem, BillItem])],
+  imports: [
+    TypeOrmModule.forFeature([
+      OrderItem,
+      OrderItemFulfill,
+      TransferItem,
+      BillItem,
+    ]),
+  ],
   controllers: [OrderItemsController],
   providers: [OrderItemsService, TransferItemsService, BillItemsService],
   exports: [TypeOrmModule],

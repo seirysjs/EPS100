@@ -1,10 +1,7 @@
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
@@ -13,7 +10,7 @@ import {
 import { ProductClass } from 'src/product-classes/product-class.entity';
 import { Worker } from 'src/workers/worker.entity';
 import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
-import { IsDate, IsDefined, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { BlockCut } from './block-cut.entity';
 import { BlockMultiCut } from './block-multi-cut.entity';
 
@@ -33,7 +30,7 @@ export class Block {
   @Column('int')
   product_class_id: number;
 
-  @Column('int', { default: null, })
+  @Column('int', { default: null })
   block_multi_cut_id: number;
 
   @IsDate()
@@ -70,7 +67,10 @@ export class Block {
   })
   worker: Worker;
 
-  @ManyToOne(() => BlockMultiCut, (blockMultiCut: BlockMultiCut) => blockMultiCut.blocks)
+  @ManyToOne(
+    () => BlockMultiCut,
+    (blockMultiCut: BlockMultiCut) => blockMultiCut.blocks,
+  )
   @JoinColumn({
     name: 'block_multi_cut_id',
     referencedColumnName: 'block_multi_cut_id',
@@ -86,11 +86,8 @@ export class Block {
     referencedColumnName: 'block_id',
   })
   warehouse_items: WarehouseItem[];
-  
-  @OneToMany(
-    () => BlockCut,
-    (blockCut: BlockCut) => blockCut.block,
-  )
+
+  @OneToMany(() => BlockCut, (blockCut: BlockCut) => blockCut.block)
   @JoinColumn({
     name: 'block_id',
     referencedColumnName: 'block_id',

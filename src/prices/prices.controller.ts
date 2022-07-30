@@ -1,6 +1,12 @@
-
-
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Price } from './price.entity';
 import { PricesService } from './prices.service';
@@ -20,7 +26,7 @@ export class PricesController {
   async findAllByBlueprint(@Param('id') id: number): Promise<Price[]> {
     return await this.pricesService.findAllforBill(id);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get('by-order/:id')
   async findAllByPriceList(@Param('id') id: number): Promise<Price[]> {

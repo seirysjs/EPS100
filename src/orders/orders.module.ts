@@ -24,9 +24,33 @@ import { PriceList } from 'src/price-lists/price-list.entity';
 import { PriceListsService } from 'src/price-lists/price-lists.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PriceList, Order, Blueprint, Client, OrderItem, WarehouseItem, OrderItemFulfill, TransferItem, Bill, BillItem, BillPayment])],
+  imports: [
+    TypeOrmModule.forFeature([
+      PriceList,
+      Order,
+      Blueprint,
+      Client,
+      OrderItem,
+      WarehouseItem,
+      OrderItemFulfill,
+      TransferItem,
+      Bill,
+      BillItem,
+      BillPayment,
+    ]),
+  ],
   controllers: [OrdersController],
-  providers: [PriceListsService, OrdersService, BlueprintsService, ClientsService, OrderItemsService, WarehouseItemsService, TransferItemsService, BillsService, BillItemsService],
+  providers: [
+    PriceListsService,
+    OrdersService,
+    BlueprintsService,
+    ClientsService,
+    OrderItemsService,
+    WarehouseItemsService,
+    TransferItemsService,
+    BillsService,
+    BillItemsService,
+  ],
   exports: [TypeOrmModule],
 })
 export class OrdersModule {}

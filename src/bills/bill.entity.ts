@@ -2,12 +2,9 @@ import { Order } from 'src/orders/order.entity';
 import { BillItem } from 'src/bill-items/bill-item.entity';
 
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
@@ -26,7 +23,7 @@ export class Bill {
   @Column('int', { default: null })
   price_list_id: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   note: string;
 
   @Column('int', { default: 7 })

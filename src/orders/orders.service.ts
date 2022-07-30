@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { count } from 'console';
 import { OrderItem } from 'src/order-items/order-item.entity';
 import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
 import { Repository } from 'typeorm';
@@ -36,8 +35,8 @@ export class OrdersService {
         'transfers.transfer_items.blueprint.product_class',
         'transfers.transfer_items.blueprint.product_size',
         'bills',
-      ], 
-      order: { order_id: "DESC" }
+      ],
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -85,7 +84,7 @@ export class OrdersService {
         'bills',
       ],
       where: { client_id: client_id, status: 'open' },
-      order: { order_id: "DESC" }
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -110,7 +109,7 @@ export class OrdersService {
         'bills',
       ],
       where: { client_id: client_id, status: 'wip' },
-      order: { order_id: "DESC" }
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -134,8 +133,8 @@ export class OrdersService {
         'transfers.transfer_items.blueprint.product_size',
         'bills',
       ],
-      where: { client_id: client_id},
-      order: { order_id: "DESC" }
+      where: { client_id: client_id },
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -158,8 +157,8 @@ export class OrdersService {
         'bills.bill_items.blueprint.product_size',
         'bills',
       ],
-      where: { price_list_id: priceListId},
-      order: { order_id: "DESC" }
+      where: { price_list_id: priceListId },
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -183,8 +182,8 @@ export class OrdersService {
         'transfers.transfer_items.blueprint.product_size',
         'bills',
       ],
-      where: { status: status},
-      order: { order_id: "DESC" }
+      where: { status: status },
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -208,8 +207,8 @@ export class OrdersService {
         'transfers.transfer_items.blueprint.product_size',
         'bills',
       ],
-      where: { transport_id: id},
-      order: { order_id: "DESC" }
+      where: { transport_id: id },
+      order: { order_id: 'DESC' },
     });
   }
 
@@ -239,30 +238,36 @@ export class OrdersService {
       laddress: order.laddress,
       lcity: order.lcity,
       lcountry: order.lcountry,
-      lpostal_code: order.lpostal_code
+      lpostal_code: order.lpostal_code,
     };
     return await this.ordersRepository.update(id, orderEntry);
   }
 
-  checkOrderItemsStatus(warehouseItems: WarehouseItem[], orderItems: OrderItem[]) {
+  checkOrderItemsStatus(
+    warehouseItems: WarehouseItem[],
+    orderItems: OrderItem[],
+  ) {
     const stackedWarehouseItemsQty = {};
     const errors = [];
 
-    warehouseItems.forEach(warehouseItem => {
-      if (!stackedWarehouseItemsQty[warehouseItem.blueprint_id]) 
-      stackedWarehouseItemsQty[warehouseItem.blueprint_id] = 0;
-      stackedWarehouseItemsQty[warehouseItem.blueprint_id] += warehouseItem.count;
+    warehouseItems.forEach((warehouseItem) => {
+      if (!stackedWarehouseItemsQty[warehouseItem.blueprint_id])
+        stackedWarehouseItemsQty[warehouseItem.blueprint_id] = 0;
+      stackedWarehouseItemsQty[warehouseItem.blueprint_id] +=
+        warehouseItem.count;
     });
-    orderItems.forEach(orderItem => {
-      if (!stackedWarehouseItemsQty[orderItem.blueprint_id]) 
-      stackedWarehouseItemsQty[orderItem.blueprint_id] = 0;
+    orderItems.forEach((orderItem) => {
+      if (!stackedWarehouseItemsQty[orderItem.blueprint_id])
+        stackedWarehouseItemsQty[orderItem.blueprint_id] = 0;
       stackedWarehouseItemsQty[orderItem.blueprint_id] -= orderItem.count;
     });
-    for (const [blueprint_id, qty] of Object.entries(stackedWarehouseItemsQty)) {
+    for (const [blueprint_id, qty] of Object.entries(
+      stackedWarehouseItemsQty,
+    )) {
       if (qty < 0) {
         errors.push({
-          property: "product_" + blueprint_id,
-          constraints: {"quantity": "not enough"}
+          property: 'product_' + blueprint_id,
+          constraints: { quantity: 'not enough' },
         });
       }
     }
@@ -275,25 +280,25 @@ export class OrdersService {
     const orderItemsMap = {};
     const allOrderItems = [];
 
-    orderItems.forEach(orderItem => {
+    orderItems.forEach((orderItem) => {
       if (!orderItemsMap[orderItem.blueprint_id]) {
         orderItemsMap[orderItem.blueprint_id] = {
           count: 0,
           blueprint: orderItem.blueprint,
         };
       }
-      
+
       orderItemsMap[orderItem.blueprint_id].count += orderItem.count;
     });
 
-    orderItemsFulfills.forEach(orderItem => {
+    orderItemsFulfills.forEach((orderItem) => {
       if (!orderItemsMap[orderItem.blueprint_id]) {
         orderItemsMap[orderItem.blueprint_id] = {
           count: 0,
           blueprint: orderItem.blueprint,
         };
       }
-      
+
       orderItemsMap[orderItem.blueprint_id].count += orderItem.count;
     });
 
@@ -302,15 +307,16 @@ export class OrdersService {
         blueprint_id: blueprint_id,
         blueprint: orderItemsMap[blueprint_id].blueprint,
         count: orderItemsMap[blueprint_id].count,
+        values: values,
       });
     }
     return allOrderItems;
   }
 
   async getLastOrderId(): Promise<number> {
-    const order = (
-      await this.ordersRepository.findOne({ order: { order_id: 'DESC' } })
-    );
+    const order = await this.ordersRepository.findOne({
+      order: { order_id: 'DESC' },
+    });
     if (order) return order.order_id;
     return 0;
   }

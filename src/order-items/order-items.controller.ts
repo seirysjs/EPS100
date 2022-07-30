@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { OrderItemFulfill } from './order-item-fulfill.entity';
 import { OrderItem } from './order-item.entity';
@@ -31,7 +39,7 @@ export class OrderItemsController {
   async findAllByBlueprint(@Param('id') id: number): Promise<OrderItem[]> {
     return await this.orderItemsService.findAllByBlueprint(id);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get('by-order/:id/fulfilled')
   async findAllFulfilledByOrder(@Param('id') id: number): Promise<object> {
@@ -40,21 +48,26 @@ export class OrderItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('by-order-item/:id/fulfilled')
-  async findAllFulfilledByOrderItem(@Param('id') id: number): Promise<OrderItemFulfill[]> {
+  async findAllFulfilledByOrderItem(
+    @Param('id') id: number,
+  ): Promise<OrderItemFulfill[]> {
     return await this.orderItemsService.findAllFulfilledByOrderItem(id);
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Get('by-order/:id/for-bill')
   async findAllForBillByOrder(@Param('id') id: number): Promise<object> {
     return await this.orderItemsService.findAllForBillByOrder(id);
   }
 
-
   @UseGuards(JwtAuthGuard)
   @Get('by-blueprint/:id/with-fulfills')
-  async findAllOrderItemsWithFulfillsByBlueprint(@Param('id') id: number): Promise<object> {
-    return await this.orderItemsService.findAllOrderItemsWithFulfillsByBlueprint(id);
+  async findAllOrderItemsWithFulfillsByBlueprint(
+    @Param('id') id: number,
+  ): Promise<object> {
+    return await this.orderItemsService.findAllOrderItemsWithFulfillsByBlueprint(
+      id,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -83,11 +96,13 @@ export class OrderItemsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async update(@Body() orderItem: OrderItem, @Param('id') id: number): Promise<OrderItem> {
+  async update(
+    @Body() orderItem: OrderItem,
+    @Param('id') id: number,
+  ): Promise<OrderItem> {
     await this.orderItemsService.updateOrderItem(id, orderItem);
     return await this.orderItemsService.findOne(id);
   }
-
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

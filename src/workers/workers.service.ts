@@ -22,20 +22,16 @@ export class WorkersService {
   }
 
   async findAll(): Promise<Worker[]> {
-    return await this.workerRepository.find({ relations: [
-      'blocks', 
-      'blocks.product_class', 
-      'transfers', 
-    ], order: { worker_id: "DESC" } });
+    return await this.workerRepository.find({
+      relations: ['blocks', 'blocks.product_class', 'transfers'],
+      order: { worker_id: 'DESC' },
+    });
   }
 
   async findOne(id: number): Promise<Worker> {
-    return await this.workerRepository.findOne(id, { relations: [
-      'blocks', 
-      'blocks.product_class', 
-      'transfers', 
-    ], },
-    );
+    return await this.workerRepository.findOne(id, {
+      relations: ['blocks', 'blocks.product_class', 'transfers'],
+    });
   }
 
   async remove(id: number): Promise<void> {

@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   Post,
-  Render,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -17,15 +16,15 @@ import { PriceListsService } from './price-lists.service';
 @Controller('price-lists')
 export class PriceListsController {
   constructor(
-    private readonly priceListsService: PriceListsService, 
+    private readonly priceListsService: PriceListsService,
     private readonly pricesService: PricesService,
-    ) {}
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('new')
   async newPriceListFormPost(@Body() formData: any): Promise<object> {
     const content = {
-      errors: []
+      errors: [],
     };
     const name = formData.name;
     const enabled = formData.enabled;
@@ -33,31 +32,25 @@ export class PriceListsController {
     const note = formData.note;
     const prices = formData.prices;
 
-    const validationPriceList = await this.priceListsService.validation(formData); 
+    const validationPriceList = await this.priceListsService.validation(
+      formData,
+    );
     if (validationPriceList.length != 0) return { errors: validationPriceList };
 
     if (prices.length == 0) return {};
 
-    const priceListId = (await this.priceListsService.create((
-      (
-        name,
-        enabled,
-        price_list_date,
-        note,
-      ) => {
-      const priceList = new PriceList();
-      priceList.name = name;
-      priceList.enabled = enabled;
-      priceList.price_list_date = price_list_date;
-      priceList.note = note;
-      return priceList;
-    })
-    (
-      name,
-      enabled,
-      price_list_date,
-      note,
-    ))).price_list_id;
+    const priceListId = (
+      await this.priceListsService.create(
+        ((name, enabled, price_list_date, note) => {
+          const priceList = new PriceList();
+          priceList.name = name;
+          priceList.enabled = enabled;
+          priceList.price_list_date = price_list_date;
+          priceList.note = note;
+          return priceList;
+        })(name, enabled, price_list_date, note),
+      )
+    ).price_list_id;
 
     for (let productRow = 0; productRow < prices.length; productRow++) {
       const productClassId = prices[productRow].product_class_id;
@@ -72,21 +65,23 @@ export class PriceListsController {
       const validatePrice = await this.pricesService.validation(price);
 
       if (validatePrice.length != 0)
-      validatePrice.forEach(error => {
-        error.property = `product_class_${productClassId}`;
-        content.errors.push(error);
-      });
+        validatePrice.forEach((error) => {
+          error.property = `product_class_${productClassId}`;
+          content.errors.push(error);
+        });
 
-      if (validatePrice.length == 0)
-      await this.pricesService.create(price);
+      if (validatePrice.length == 0) await this.pricesService.create(price);
     }
-    
+
     return content;
   }
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/edit')
-  async editPriceListFormPost(@Param('id') priceListId: number, @Body() formData: any): Promise<object> {
+  async editPriceListFormPost(
+    @Param('id') priceListId: number,
+    @Body() formData: any,
+  ): Promise<object> {
     const content = {
       errors: [],
     };
@@ -94,13 +89,19 @@ export class PriceListsController {
     const name = formData.name;
     const enabled = formData.enabled;
     const note = formData.note;
-    
-    const validationPriceList = await this.priceListsService.validation(formData); 
+
+    const validationPriceList = await this.priceListsService.validation(
+      formData,
+    );
     if (validationPriceList.length != 0) return { errors: validationPriceList };
 
     const priceList = await this.priceListsService.findOne(priceListId);
     const prices = [];
-    for (let productRow = 0; productRow < formData.prices.length; productRow++) {
+    for (
+      let productRow = 0;
+      productRow < formData.prices.length;
+      productRow++
+    ) {
       const productClassId = formData.prices[productRow].product_class_id;
       const markup = formData.prices[productRow].markup;
       const amount = formData.prices[productRow].amountProduct;
@@ -114,13 +115,12 @@ export class PriceListsController {
       const validatePrice = await this.pricesService.validation(price);
 
       if (validatePrice.length != 0)
-      validatePrice.forEach(error => {
-        error.property = `product_class_${productClassId}`;
-        content.errors.push(error);
-      });
+        validatePrice.forEach((error) => {
+          error.property = `product_class_${productClassId}`;
+          content.errors.push(error);
+        });
 
-      if (validatePrice.length == 0)
-      prices.push(price);
+      if (validatePrice.length == 0) prices.push(price);
     }
 
     if (content.errors.length != 0) return content;
@@ -131,9 +131,8 @@ export class PriceListsController {
     priceList.note = note;
 
     await this.pricesService.removePrices(priceList.prices);
-    
-    if (prices.length != 0)
-    await this.pricesService.createPrices(prices);
+
+    if (prices.length != 0) await this.pricesService.createPrices(prices);
 
     await this.priceListsService.updatePriceList(priceListId, priceList);
 
@@ -194,5 +193,4 @@ export class PriceListsController {
   async getPriceListsInQueue(@Param('id') id: number): Promise<PriceList[]> {
     return await this.priceListsService.getPriceListsWithPrice(id);
   }
-
 }

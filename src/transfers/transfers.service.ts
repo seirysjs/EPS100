@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TransferItem } from 'src/transfer-items/transfer-item.entity';
-import { WarehouseItem } from 'src/warehouse-items/warehouse-item.entity';
 import { Repository } from 'typeorm';
 import { Transfer } from './transfer.entity';
 
@@ -32,8 +30,8 @@ export class TransfersService {
         'transfer_items.blueprint',
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
-      ], 
-      order: { transfer_id: "DESC" }
+      ],
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -75,7 +73,7 @@ export class TransfersService {
         'transfer_items.blueprint.product_size',
       ],
       where: { client_id: client_id, status: 'open' },
-      order: { transfer_id: "DESC" }
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -97,7 +95,7 @@ export class TransfersService {
         'transfer_items.blueprint.product_size',
       ],
       where: { client_id: client_id, status: 'wip' },
-      order: { transfer_id: "DESC" }
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -118,8 +116,8 @@ export class TransfersService {
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
       ],
-      where: { client_id: client_id},
-      order: { transfer_id: "DESC" }
+      where: { client_id: client_id },
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -140,8 +138,8 @@ export class TransfersService {
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
       ],
-      where: { worker_id: worker_id},
-      order: { transfer_id: "DESC" }
+      where: { worker_id: worker_id },
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -162,8 +160,8 @@ export class TransfersService {
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
       ],
-      where: { order_id: order_id},
-      order: { transfer_id: "DESC" }
+      where: { order_id: order_id },
+      order: { transfer_id: 'DESC' },
     });
     return transfers;
   }
@@ -185,8 +183,8 @@ export class TransfersService {
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
       ],
-      where: { status: status},
-      order: { transfer_id: "DESC" }
+      where: { status: status },
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -207,8 +205,8 @@ export class TransfersService {
         'transfer_items.blueprint.product_class',
         'transfer_items.blueprint.product_size',
       ],
-      where: { transport_id: id},
-      order: { transfer_id: "DESC" }
+      where: { transport_id: id },
+      order: { transfer_id: 'DESC' },
     });
   }
 
@@ -247,9 +245,9 @@ export class TransfersService {
   }
 
   async getLastTransferId(): Promise<number> {
-    const transfer = (
-      await this.transfersRepository.findOne({ order: { transfer_id: 'DESC' } })
-    );
+    const transfer = await this.transfersRepository.findOne({
+      order: { transfer_id: 'DESC' },
+    });
     if (transfer) return transfer.transfer_id;
     return 0;
   }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { serializeUser } from 'passport';
 import { Repository } from 'typeorm';
 import { ProductSize } from './product-size.entity';
 
@@ -17,20 +16,53 @@ export class ProductSizesService {
 
   async findAll(): Promise<ProductSize[]> {
     return await this.productSizesRepository.find({
-      relations: ['blueprints', 'blueprints.product_size', 'blueprints.warehouse_items', 'blueprints.order_items', 'blueprints.order_items.order', 'blueprints.order_items.order.transfers', 'blueprints.order_items.order.transfers.transfer_items', 'blueprints.transfer_items', 'blueprints.transfer_items.transfer', 'blueprints.transfer_items.transfer.order'],
+      relations: [
+        'blueprints',
+        'blueprints.product_size',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.order_items.order',
+        'blueprints.order_items.order.transfers',
+        'blueprints.order_items.order.transfers.transfer_items',
+        'blueprints.transfer_items',
+        'blueprints.transfer_items.transfer',
+        'blueprints.transfer_items.transfer.order',
+      ],
     });
   }
 
   async findOne(id: number): Promise<ProductSize> {
     return await this.productSizesRepository.findOne(id, {
-      relations: ['blueprints', 'blueprints.product_size', 'blueprints.warehouse_items', 'blueprints.order_items', 'blueprints.order_items.order', 'blueprints.order_items.order.transfers', 'blueprints.order_items.order.transfers.transfer_items', 'blueprints.transfer_items', 'blueprints.transfer_items.transfer', 'blueprints.transfer_items.transfer.order'],
+      relations: [
+        'blueprints',
+        'blueprints.product_size',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.order_items.order',
+        'blueprints.order_items.order.transfers',
+        'blueprints.order_items.order.transfers.transfer_items',
+        'blueprints.transfer_items',
+        'blueprints.transfer_items.transfer',
+        'blueprints.transfer_items.transfer.order',
+      ],
     });
   }
 
   async findBySize(productSize: ProductSize): Promise<ProductSize[]> {
     return await this.productSizesRepository.find({
-      relations: ['blueprints', 'blueprints.product_class', 'blueprints.warehouse_items', 'blueprints.order_items', 'blueprints.order_items.order', 'blueprints.order_items.order.transfers', 'blueprints.order_items.order.transfers.transfer_items', 'blueprints.transfer_items', 'blueprints.transfer_items.transfer', 'blueprints.transfer_items.transfer.order'],
-      where: { 
+      relations: [
+        'blueprints',
+        'blueprints.product_class',
+        'blueprints.warehouse_items',
+        'blueprints.order_items',
+        'blueprints.order_items.order',
+        'blueprints.order_items.order.transfers',
+        'blueprints.order_items.order.transfers.transfer_items',
+        'blueprints.transfer_items',
+        'blueprints.transfer_items.transfer',
+        'blueprints.transfer_items.transfer.order',
+      ],
+      where: {
         x_mm: productSize.x_mm,
         y_mm: productSize.y_mm,
         z_mm: productSize.z_mm,
@@ -46,7 +78,7 @@ export class ProductSizesService {
     await this.productSizesRepository.update(id, productSize);
     return await this.findOne(id);
   }
-  
+
   async removeProductSizes(productSizes: ProductSize[]): Promise<void> {
     for (let length = 0; length < productSizes.length; length++) {
       await this.productSizesRepository.delete(
@@ -55,5 +87,4 @@ export class ProductSizesService {
     }
     return;
   }
-
 }

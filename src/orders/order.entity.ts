@@ -6,25 +6,22 @@ import { PriceList } from 'src/price-lists/price-list.entity';
 import { Transfer } from 'src/transfers/transfer.entity';
 import { Transport } from 'src/transports/transport.entity';
 import {
-  ManyToMany,
-  JoinTable,
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   OneToMany,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
-export type OrderStatusType = 'open' | 'wip' | 'done' | 'void' ;
+export type OrderStatusType = 'open' | 'wip' | 'done' | 'void';
 
 @Entity({ name: 'orders' })
 export class Order {
   @PrimaryGeneratedColumn()
   order_id: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   number: string;
 
   @Column('int', { default: null })
@@ -42,34 +39,34 @@ export class Order {
   @Column('int', { default: null })
   price_list_id: number;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   address: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   city: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   country: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   postal_code: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   laddress: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   lcity: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   lcountry: string;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   lpostal_code: string;
 
   @Column('datetime', { default: null })
   delivery_date: Date;
 
-  @Column('varchar', { default: "" })
+  @Column('varchar', { default: '' })
   note: string;
 
   @OneToMany(() => OrderItem, (orderItem: OrderItem) => orderItem.order)
@@ -79,7 +76,10 @@ export class Order {
   })
   order_items: OrderItem[];
 
-  @OneToMany(() => OrderItemFulfill, (orderItemFulfill: OrderItemFulfill) => orderItemFulfill.order)
+  @OneToMany(
+    () => OrderItemFulfill,
+    (orderItemFulfill: OrderItemFulfill) => orderItemFulfill.order,
+  )
   @JoinColumn({
     name: 'order_id',
     referencedColumnName: 'order_id',

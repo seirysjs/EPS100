@@ -22,7 +22,9 @@ export class BillsService {
     return await this.billPaymentsRepository.save(billPayment);
   }
 
-  async validationBillPayment(billPayment: BillPayment): Promise<ValidationError[]> {
+  async validationBillPayment(
+    billPayment: BillPayment,
+  ): Promise<ValidationError[]> {
     const validateBillPayment = new BillPayment();
     validateBillPayment.bill_id = parseInt(billPayment.bill_id.toString(10));
     validateBillPayment.amount = parseFloat(billPayment.amount.toString(10));
@@ -34,7 +36,10 @@ export class BillsService {
     return result;
   }
 
-  async updateBillPayment(id: number, billPayment: BillPayment): Promise<BillPayment> {
+  async updateBillPayment(
+    id: number,
+    billPayment: BillPayment,
+  ): Promise<BillPayment> {
     const billPaymentEntry = {
       bill_id: billPayment.bill_id,
       payment_date: billPayment.payment_date,
@@ -42,7 +47,7 @@ export class BillsService {
       note: billPayment.note,
     };
     await this.billPaymentsRepository.update(id, billPaymentEntry);
-    return await this.billPaymentsRepository.findOne(id, { 
+    return await this.billPaymentsRepository.findOne(id, {
       relations: [
         'bill',
         'bill.order',
@@ -53,9 +58,9 @@ export class BillsService {
         'bill.bill_items.blueprint.product_size',
         'bill.bill_payments',
         'bill.price_list',
-        'bill.price_list.prices'
+        'bill.price_list.prices',
       ],
-    })
+    });
   }
 
   async getBillPaymentsByBill(id: number): Promise<BillPayment[]> {
@@ -70,10 +75,10 @@ export class BillsService {
         'bill.bill_items.blueprint.product_size',
         'bill.bill_payments',
         'bill.price_list',
-        'bill.price_list.prices'
-      ], 
+        'bill.price_list.prices',
+      ],
       where: { bill_id: id },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -89,10 +94,10 @@ export class BillsService {
         'bill.bill_items.blueprint.product_size',
         'bill.bill_payments',
         'bill.price_list',
-        'bill.price_list.prices'
-      ], 
-      where: { bill: { order_id: id  } },
-      order: { bill_id: "DESC" }
+        'bill.price_list.prices',
+      ],
+      where: { bill: { order_id: id } },
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -108,10 +113,10 @@ export class BillsService {
         'bill.bill_items.blueprint.product_size',
         'bill.bill_payments',
         'bill.price_list',
-        'bill.price_list.prices'
-      ], 
-      where: { bill: { order: { client_id: id }  } },
-      order: { bill_id: "DESC" }
+        'bill.price_list.prices',
+      ],
+      where: { bill: { order: { client_id: id } } },
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -127,7 +132,7 @@ export class BillsService {
         'bill.bill_items.blueprint.product_size',
         'bill.bill_payments',
         'bill.price_list',
-        'bill.price_list.prices'
+        'bill.price_list.prices',
       ],
     });
   }
@@ -146,8 +151,8 @@ export class BillsService {
         'bill_payments',
         'price_list',
         'price_list.prices',
-      ], 
-      order: { bill_id: "DESC" }
+      ],
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -164,8 +169,8 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
     });
   }
 
@@ -182,10 +187,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { order: { status: 'open', client_id: client_id } },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -202,10 +207,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { order: { status: 'wip', client_id: client_id } },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -222,10 +227,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { order: { status: 'done', client_id: client_id } },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -242,10 +247,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { order: { client_id: client_id } },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -262,10 +267,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { price_list_id: price_list_id },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
   }
 
@@ -282,10 +287,10 @@ export class BillsService {
         'bill_items.blueprint.product_size',
         'bill_payments',
         'price_list',
-        'price_list.prices'
-      ], 
+        'price_list.prices',
+      ],
       where: { order_id: order_id },
-      order: { bill_id: "DESC" }
+      order: { bill_id: 'DESC' },
     });
     return bills;
   }
@@ -313,9 +318,9 @@ export class BillsService {
   }
 
   async getLastBillId(): Promise<number> {
-    const bill = (
-      await this.billsRepository.findOne({ order: { bill_id: 'DESC' } })
-    );
+    const bill = await this.billsRepository.findOne({
+      order: { bill_id: 'DESC' },
+    });
     if (bill) return bill.bill_id;
     return 0;
   }

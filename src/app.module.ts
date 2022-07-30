@@ -131,4 +131,4 @@ const connectionOptions = (): TypeOrmModuleOptions => config;
     TasksService,
   ],
 })
-export class AppModule { }
+export class AppModule {}

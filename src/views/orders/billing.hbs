@@ -15,7 +15,7 @@
 
   <body>
     <center><b>PVM SĄSKAITA FAKTŪRA</b></center>
-    <center><b>Serija 22 Nr. {{ billing.bill_id }}</b></center>
+    <center><b>Serija S22 Nr. {{ billing.bill_id }}</b></center>
     <center><b>{{#if billing.bill_date}}{{#orderDeliveryDate billing.bill_date}}{{/orderDeliveryDate}}{{else}}{{#orderDeliveryDate order.delivery_date}}{{/orderDeliveryDate}}{{/if}}</b></center>
     <br>
     <center>
@@ -29,13 +29,13 @@
         <td></td>
       </tr>
       <tr>
-        <td><b>UAB "Placeholder"</b></td>
+        <td><b>UAB "Vardeniai Pavardenaii"</b></td>
         <td></td>
         <td></td>
         <td colspan="2"><b>{{ order.client.name }}</b></td>
       </tr>
       <tr>
-        <td colspan="2">Placeholder for address</td>
+        <td colspan="2">Vardenių g. 3, Vardeniai, LT-00000 Klaipėdos r.</td>
         <td></td>
         <td colspan="2">{{ order.client.address }}, {{ order.client.postal_code }} {{ order.client.city }}, {{ order.client.country }}</td>
       </tr>
@@ -55,21 +55,21 @@
       </tr>
       <tr>
         <td><b>Įmonės kodas: </b></td>
-        <td>0000000</td>
+        <td>000000000</td>
         <td></td>
         <td><b>Įmonės kodas: </b></td>
         <td>{{ order.client.company_code }}</td>
       </tr>
       <tr>
         <td><b>PVM mokėtojo kodas:</b> </td>
-        <td>LT1000000000</td>
+        <td>LT100000000000</td>
         <td></td>
         <td><b>PVM mokėtojo kodas:</b></td>
         <td>{{ order.client.vat_code }}</td>
       </tr>
       <tr>
         <td><b>Banko pavadinimas: </b></td>
-        <td>UAB Bankas</td>
+        <td>UAB Bankų bankas</td>
         <td></td>
         <td><b>Banko pavadinimas: </b></td>
         <td>{{ order.client.banks_name }}</td>
@@ -132,8 +132,6 @@
       
     </div>
     </center>
-    
-    
     
   </body>
 
